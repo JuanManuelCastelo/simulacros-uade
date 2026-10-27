@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Simulacros UADE 2C 2026</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: hoja de examen en una sola columna (máx. 760px); arriba la elección de materia, abajo la hoja con su cabecera de puntaje → nota */
+:root{
+  --bg:#F3F5F8; --paper:#FFFFFF; --fg:#18202E; --muted:#5B6577; --line:#D9DEE7;
+  --ink:#2346A8; --ink-soft:#E6ECFA; --ok:#1E7A4C; --ok-soft:#E3F3EA; --pen:#C2362B; --pen-soft:#FBE9E7; --half:#9A6A00; --half-soft:#FBF1DA;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F131B; --paper:#161C27; --fg:#E7EBF2; --muted:#98A2B5; --line:#2A3344;
+  --ink:#8EA8F5; --ink-soft:#1E2943; --ok:#5CC98F; --ok-soft:#17301F; --pen:#F07A6E; --pen-soft:#3A1D1A; --half:#E3B95A; --half-soft:#352A12; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F131B; --paper:#161C27; --fg:#E7EBF2; --muted:#98A2B5; --line:#2A3344;
+  --ink:#8EA8F5; --ink-soft:#1E2943; --ok:#5CC98F; --ok-soft:#17301F; --pen:#F07A6E; --pen-soft:#3A1D1A; --half:#E3B95A; --half-soft:#352A12; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 var(--f-body);}
+.wrap{max-width:760px;margin:0 auto;padding-block:28px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:22px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.7rem,4.5vw,2.3rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.3rem;font-weight:700}
+.lead{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.eyebrow{font:500 .72rem/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+button{font:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.materias{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.materias{grid-template-columns:1fr}}
+.materia{display:flex;flex-direction:column;gap:6px;text-align:left;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);color:var(--fg)}
+.materia strong{font-family:var(--f-display);font-size:1.05rem;font-weight:700}
+.materia .meta{font:400 .8rem/1.3 var(--f-mono);color:var(--muted)}
+.materia[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink) inset;background:var(--ink-soft)}
+.hoja{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding-block:22px;padding-inline:clamp(16px,4vw,28px);display:flex;flex-direction:column;gap:18px;min-width:0}
+.cab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start}
+.escala{overflow-x:auto}
+.escala table{border-collapse:collapse;font:400 .74rem/1.2 var(--f-mono);font-variant-numeric:tabular-nums;width:100%;min-width:480px}
+.escala td,.escala th{border:1px solid var(--line);padding:5px 6px;text-align:center;white-space:nowrap}
+.escala th{font-weight:500;color:var(--muted);text-align:left}
+.escala td.on{background:var(--ink);color:var(--paper);font-weight:500}
+.reglas{margin:0;padding-left:18px;color:var(--muted);display:grid;gap:2px}
+.acciones{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:600}
+.btn.sec{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.historial{font:400 .82rem/1.4 var(--f-mono);color:var(--muted);display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font:500 .78rem/1.2 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--fg)}
+.pill.ok{border-color:var(--ok);color:var(--ok)} .pill.mal{border-color:var(--pen);color:var(--pen)}
+.barra{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--bg);padding-block:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--bg)}
+.reloj{font:500 1.15rem/1 var(--f-mono);font-variant-numeric:tabular-nums}
+.reloj.poco{color:var(--pen)}
+.parte{display:flex;flex-direction:column;gap:14px}
+.parte h3{font-size:1.02rem;font-weight:700;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.preg{display:flex;flex-direction:column;gap:10px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.preg:last-child{border-bottom:0}
+.enun{display:flex;gap:10px}
+.num{font:500 .85rem/1.55 var(--f-mono);color:var(--muted);min-width:2.2ch}
+.enun p{margin:0;font-weight:500;min-width:0}
+.pts{font:400 .72rem/1 var(--f-mono);color:var(--muted);white-space:nowrap;margin-left:auto;padding-top:4px}
+.opc{display:grid;gap:6px;padding-left:calc(2.2ch + 10px)}
+.opc label{display:flex;gap:10px;align-items:flex-start;padding:8px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.opc label span{min-width:0}
+.opc input{margin-top:4px;accent-color:var(--ink)}
+.opc label.bien{border-color:var(--ok);background:var(--ok-soft)}
+.opc label.marcada-mal{border-color:var(--pen);background:var(--pen-soft);text-decoration:line-through;text-decoration-color:var(--pen)}
+.expl{margin-left:calc(2.2ch + 10px);padding:10px 12px;border-left:3px solid var(--line);color:var(--muted);font-size:.92rem}
+.expl.ok{border-color:var(--ok)} .expl.mal{border-color:var(--pen)}
+.expl b{color:var(--fg)}
+textarea{width:100%;min-height:120px;resize:vertical;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;line-height:1.5}
+.abierta{display:flex;flex-direction:column;gap:10px;padding-left:calc(2.2ch + 10px);min-width:0}
+.modelo{padding:12px 14px;border-radius:8px;background:var(--ink-soft);display:flex;flex-direction:column;gap:6px}
+.modelo ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.autoeval{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.autoeval button{border:1px solid var(--line);background:var(--paper);color:var(--fg);border-radius:999px;padding:6px 14px;font-size:.88rem}
+.autoeval button[aria-pressed="true"][data-v="1"]{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.autoeval button[aria-pressed="true"][data-v="0.5"]{border-color:var(--half);background:var(--half-soft);color:var(--half)}
+.autoeval button[aria-pressed="true"][data-v="0"]{border-color:var(--pen);background:var(--pen-soft);color:var(--pen)}
+.resultado{display:flex;flex-wrap:wrap;gap:18px;align-items:center;padding:16px;border-radius:var(--r);border:1px solid var(--line)}
+.nota{font:700 3rem/1 var(--f-display);font-variant-numeric:tabular-nums}
+.nota.mal{color:var(--pen)} .nota.ok{color:var(--ok)}
+.resultado .det{display:flex;flex-direction:column;gap:4px;min-width:0}
+.aviso{font-size:.88rem;color:var(--muted)}
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--pen);border-radius:8px;background:var(--pen-soft)}
+@media (prefers-reduced-motion: no-preference){.preg,.modelo{animation:aparece .25s ease-out both}@keyframes aparece{from{transform:translateY(4px)}to{transform:none}}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">UADE · 2.º cuatrimestre 2026 · finales de diciembre</div>
+    <h1>Simulacros de examen</h1>
+    <p class="lead">Cada simulacro sortea 15 preguntas de opción múltiple que se corrigen solas y 5 preguntas para desarrollar, como las de los modelos de parcial. Las abiertas las corregís vos con la respuesta modelo. La nota sale con la misma escala de la hoja de examen.</p>
+  </header>
+
+  <nav class="materias" id="materias" aria-label="Materia"></nav>
+
+  <main class="hoja" id="hoja"></main>
+</div>
+
+<script>
+const BANCO = {
+"p3": { nombre:"Programación III", sub:"Diseño y Análisis de Algoritmos · final 15/12", mc:[
+ {q:"¿Qué complejidad tiene la búsqueda binaria sobre un arreglo ordenado?", o:["O(log n)","O(n)","O(n log n)","O(1)"], a:0, e:"T(n) = T(n/2) + O(1): división con a = 1, b = 2, k = 0. Como a = b^k, queda Θ(n^0 · log n) = Θ(log n)."},
+ {q:"Las Torres de Hanói hacen dos llamadas con n − 1 y trabajo constante. ¿Qué complejidad tienen?", o:["Θ(2ⁿ)","Θ(n²)","Θ(n log n)","Θ(n)"], a:0, e:"Sustracción con a = 2, b = 1, k = 0. Como a > 1, la complejidad es Θ(a^(n/b)) = Θ(2ⁿ)."},
+ {q:"Un algoritmo hace dos llamadas sobre n/2 y un for de n afuera. ¿Qué complejidad tiene?", o:["Θ(n log n)","Θ(n)","Θ(n²)","Θ(log n)"], a:0, e:"División con a = 2, b = 2, k = 1. b^k = 2 = a, entonces Θ(n^k · log n) = Θ(n log n). Es el caso de Merge Sort."},
+ {q:"División con a = 3, b = 2 y k = 0. ¿Cuál es la complejidad?", o:["Θ(n^(log₂ 3)) ≈ Θ(n^1,58)","Θ(n log n)","Θ(3ⁿ)","Θ(n)"], a:0, e:"b^k = 2⁰ = 1 y a = 3 > 1, así que corresponde Θ(n^(log_b a)) = Θ(n^(log₂ 3))."},
+ {q:"Para el factorial recursivo (una llamada con n − 1 y una multiplicación), ¿qué valores tienen a, b y k?", o:["a = 1, b = 1, k = 0 → Θ(n)","a = 2, b = 1, k = 0 → Θ(2ⁿ)","a = 1, b = 2, k = 0 → Θ(log n)","a = 1, b = 1, k = 1 → Θ(n²)"], a:0, e:"Sustracción con a = 1: la regla da Θ(n^(k+1)) = Θ(n)."},
+ {q:"¿Qué dice el principio de invarianza?", o:["Dos implementaciones del mismo algoritmo difieren a lo sumo en una constante multiplicativa","Un algoritmo tarda siempre lo mismo en cualquier computadora","La complejidad depende del lenguaje de programación","Todo algoritmo recursivo puede pasarse a iterativo"], a:0, e:"Formalmente T₁(n) ≤ c · T₂(n) para n ≥ n₀. Por eso la complejidad no depende del hardware ni del lenguaje."},
+ {q:"¿Cómo se calcula el costo de un condicional if/else?", o:["Costo de la condición + el máximo entre las dos ramas","La suma de las dos ramas","El mínimo entre las dos ramas","Solo el costo de la rama then"], a:0, e:"Es la regla del máximo: T = T(condición) + máx(T(then), T(else))."},
+ {q:"¿Cuál es el peor caso de un algoritmo con dos for anidados que busca elementos duplicados?", o:["Que no haya ningún duplicado","Que el duplicado esté en las dos primeras posiciones","Que el arreglo esté ordenado","Que todos los elementos sean iguales"], a:0, e:"Sin duplicados recorre las n(n−1)/2 comparaciones y nunca corta antes de tiempo: O(n²)."},
+ {q:"¿Cuándo cae Quick Sort en O(n²)?", o:["Cuando el pivote es siempre el mínimo o el máximo","Cuando el arreglo tiene números negativos","Cuando n es impar","Nunca: siempre es O(n log n)"], a:0, e:"Con un pivote extremo las particiones quedan desbalanceadas (n − 1 y 0). En promedio es O(n log n)."},
+ {q:"¿Qué complejidad tienen los ordenamientos por selección y por inserción?", o:["O(n²)","O(n log n)","O(n)","O(log n)"], a:0, e:"Los dos tienen dos ciclos anidados que dependen de n."},
+ {q:"¿Qué complejidad tiene el elemento mayoritario por divide y conquista (reducción por pares)?", o:["Θ(n)","Θ(n log n)","Θ(n²)","Θ(log n)"], a:0, e:"T(n) = T(n/2) + Θ(n): a = 1, b = 2, k = 1. Como a < b^k, da Θ(n). La verificación final también es O(n)."},
+ {q:"Con monedas [4, 3, 1] y v = 6, ¿qué pasa con greedy?", o:["Da 4 + 1 + 1 (3 monedas) y el óptimo es 3 + 3 (2 monedas)","Da el óptimo de 2 monedas","No encuentra solución","Da 3 + 3 porque prueba todas las combinaciones"], a:0, e:"Greedy es miope: toma la de 4 y no reconsidera. El sistema no es canónico, así que corresponde programación dinámica."},
+ {q:"Según la cátedra, ¿qué propiedad tiene que cumplir un sistema de monedas para que greedy garantice el óptimo?", o:["Cada moneda tiene que valer al menos el doble de la anterior","Tiene que haber exactamente 7 monedas","Todas las monedas tienen que ser impares","La moneda más grande tiene que ser múltiplo de 10"], a:0, e:"Es la regla del doble o de dominancia (Mₖ ≥ 2·Mₖ₋₁). Es suficiente pero no necesaria: un sistema que no la cumple puede igual ser canónico."},
+ {q:"¿Cuál es el criterio de selección óptimo en la mochila fraccionaria?", o:["Mayor relación valor/peso","Mayor valor","Menor peso","Orden de llegada"], a:0, e:"Cada unidad de capacidad aporta el máximo valor. Por valor o por peso hay contraejemplos (por ejemplo, P = 10 con A (10, 100), B (5, 90) y C (5, 90))."},
+ {q:"¿Con qué técnica se garantiza el óptimo en la mochila 0/1?", o:["Programación dinámica","Greedy por valor/peso","Búsqueda binaria","Divide y conquista sin memoria"], a:0, e:"Como no se puede fraccionar, greedy puede desperdiciar capacidad. Programación dinámica es Θ(n × P), que es seudopolinomial."},
+ {q:"¿Qué condición tiene que cumplir el grafo para usar Dijkstra?", o:["Pesos de las aristas no negativos","Grafo no dirigido","Grafo sin ciclos","Todos los pesos iguales"], a:0, e:"Dijkstra fija en cada paso el vértice más cercano, y eso solo es válido si ningún camino posterior puede bajar la distancia."},
+ {q:"¿Qué complejidad tiene Dijkstra con lista de adyacencia y min-heap?", o:["O((V + E) log V)","O(V²)","O(V³)","O(E)"], a:0, e:"Con matriz de adyacencia es O(V²). Con heap, O((V + E) log V)."},
+ {q:"¿Qué estructura usa Kruskal para detectar si una arista forma un ciclo?", o:["Conjuntos disjuntos (Union-Find)","Cola de prioridad máxima","Pila","Tabla hash de vértices visitados por DFS"], a:0, e:"Si los dos extremos ya están en el mismo componente, la arista forma un ciclo y se descarta."},
+ {q:"¿En qué tipo de grafo conviene Prim antes que Kruskal?", o:["Grafos densos (E ≈ V²)","Grafos dispersos (E ≈ V)","Grafos dirigidos","Grafos con pesos negativos"], a:0, e:"Prim con matriz es O(n²) y no necesita ordenar todas las aristas. Kruskal, O(a log a), conviene con pocas aristas."},
+ {q:"¿Cuántas aristas tiene el árbol de recubrimiento mínimo de un grafo conexo con n vértices?", o:["n − 1","n","n + 1","n(n − 1)/2"], a:0, e:"Es un árbol: conecta todos los vértices sin ciclos."},
+ {q:"¿Qué complejidad tiene Fibonacci con programación dinámica?", o:["O(n)","O(2ⁿ)","O(n²)","O(log n)"], a:0, e:"Cada F(i) se calcula una sola vez y se guarda. Por divide y conquista es O(2ⁿ) porque recalcula."},
+ {q:"¿Qué resuelve el algoritmo de Floyd y con qué complejidad?", o:["Caminos mínimos entre todos los pares, en O(n³)","Árbol de recubrimiento mínimo, en O(n²)","Caminos mínimos desde un origen, en O(n log n)","Orden topológico, en O(n)"], a:0, e:"Mₖ[i][j] = mín(Mₖ₋₁[i][j], Mₖ₋₁[i][k] + Mₖ₋₁[k][j]) para cada k: tres ciclos anidados."},
+ {q:"¿Qué complejidad tiene el problema del cambio por programación dinámica?", o:["O(n × v), con n denominaciones y v el monto","O(n log n)","O(v²)","O(2ⁿ)"], a:0, e:"Es una tabla de n filas por v + 1 columnas. Siempre da el óptimo, pero es más lenta que greedy, O(k log k)."},
+ {q:"¿Qué es backtracking?", o:["Una búsqueda en profundidad sobre el árbol de soluciones, con poda","Una búsqueda en anchura que guarda todos los niveles","Una técnica greedy que no vuelve atrás","Una forma de programación dinámica de abajo hacia arriba"], a:0, e:"Construye la solución paso a paso, poda las ramas que no son prometedoras y retrocede cuando no puede completarla."},
+ {q:"En la poda alfa-beta, ¿cuándo se corta una rama?", o:["Cuando β ≤ α","Cuando α ≤ 0","Cuando β = +∞","Cuando se llega a una hoja"], a:0, e:"α es lo que MAX ya tiene asegurado y β lo que MIN le deja como máximo. Si β ≤ α, el resto de los hijos no cambia la decisión."},
+ {q:"Con 121 fósforos (se sacan 1, 2 o 3 y pierde quien saca el último), ¿conviene jugar primero?", o:["No: 121 mod 4 = 1 es una posición perdedora (nodo P)","Sí: el que empieza siempre gana","Da igual: depende del azar","Sí, sacando 3 fósforos en la primera jugada"], a:0, e:"Las posiciones con n mod 4 = 1 son P. Se cede el turno y se responde siempre con 4 − x hasta dejarle 1 al rival."},
+ {q:"¿Qué complejidad tiene la poda alfa-beta en el mejor caso?", o:["O(b^(d/2))","O(b^d)","O(d)","O(b · d)"], a:0, e:"Se logra evaluando primero las mejores jugadas. En el peor caso es igual a Min-Max, O(b^d)."},
+ {q:"¿Por qué en la búsqueda binaria se pasan índices y no copias del subarreglo?", o:["Copiar agrega O(n) por llamada y la complejidad pasa a O(n)","Java no permite copiar arreglos","Con índices el algoritmo es O(1)","Las copias hacen que el arreglo se desordene"], a:0, e:"T(n) = T(n/2) + O(n) da O(n): se pierde toda la ventaja, además del gasto de memoria."}
+], ab:[
+ {q:"¿Cuáles son los dos métodos para calcular la complejidad de un algoritmo recursivo? Explicá qué representan a, b y k.", r:["Reducción por sustracción, T(n) = a·T(n − b) + p(n), y por división, T(n) = a·T(n/b) + f(n).","a = cantidad de llamadas recursivas en el peor caso; b = cuánto se reduce la entrada (se resta o se divide); k = grado del trabajo fuera de la recursión.","Sustracción: a < 1 → Θ(n^k); a = 1 → Θ(n^(k+1)); a > 1 → Θ(a^(n/b)).","División: a < b^k → Θ(n^k); a = b^k → Θ(n^k log n); a > b^k → Θ(n^(log_b a))."]},
+ {q:"¿Por qué Fibonacci por divide y conquista tiene complejidad 2ⁿ y cómo lo mejora la programación dinámica?", r:["Cada llamada genera dos (n − 1 y n − 2) y los subproblemas se superponen: recalcula los mismos valores muchas veces.","Por sustracción, a = 2 > 1, así que es exponencial.","Programación dinámica guarda cada F(i) en una tabla y la arma de abajo hacia arriba: F(i) = F(i−1) + F(i−2), una sola vez cada uno → O(n)."]},
+ {q:"¿Qué es un algoritmo greedy, cuáles son sus componentes y por qué no siempre da el óptimo? Dá un ejemplo.", r:["Voraz o goloso: en cada paso elige la opción localmente óptima y no vuelve atrás.","Componentes: conjunto de candidatos, función de selección, de factibilidad, objetivo y solución.","Es miope: una buena decisión local puede impedir el óptimo global.","Ejemplo: monedas [4, 3, 1] con v = 6. Greedy da 4 + 1 + 1 y el óptimo es 3 + 3. También el sistema imperial: 48 p = 30 + 12 + 6 en lugar de 24 + 24."]},
+ {q:"Problema de la mochila: ¿siempre conviene usar la versión greedy? Justificá.", r:["No. Greedy por valor/peso es óptimo solo si los objetos se pueden fraccionar (mochila fraccionaria, O(n log n)).","En la mochila 0/1 puede fallar. Ejemplo: P = 10, A (7, 70), B (5, 45), C (5, 45). Greedy toma A (70) y desperdicia 3; el óptimo es B + C = 90.","Para la 0/1 se usa programación dinámica: V[i][j] = máx(V[i−1][j], V[i−1][j − pᵢ] + vᵢ), en O(n × P)."]},
+ {q:"Explicá a grandes rasgos cómo funciona el problema del cambio por programación dinámica y compará su complejidad con la versión greedy.", r:["Es una tabla C[i][j]: filas = denominaciones, columnas = montos de 0 a v. Cada celda tiene la mínima cantidad de monedas para pagar j con las primeras i.","C[i][j] = mín(C[i−1][j], 1 + C[i][j − dᵢ]): no usar la moneda i, o usar una más (se queda en la fila porque las monedas son ilimitadas). La respuesta está en C[n][v].","Es O(n × v), mayor que greedy, O(k log k). No es más rápida, pero siempre da el óptimo, con cualquier sistema de monedas."]},
+ {q:"¿Qué es un árbol de recubrimiento mínimo y con qué algoritmos se obtiene? Compará sus estrategias.", r:["Es el subconjunto de aristas de un grafo no dirigido, conexo y ponderado que conecta todos los vértices sin ciclos y con peso total mínimo (n − 1 aristas).","Kruskal: global; ordena las aristas y agrega la más barata que no forme ciclo (Union-Find). Es O(a log a) y conviene en grafos dispersos.","Prim: local; crece desde un vértice tomando la arista más barata que sale del árbol. Es O(n²) con matriz y conviene en grafos densos.","Los dos dan el óptimo. Con pesos empatados pueden dar árboles distintos con el mismo costo."]},
+ {q:"Algoritmo de Dijkstra: ¿cuál es la estrategia greedy que plantea?", r:["Desde el origen, en cada paso elige el vértice no visitado con menor distancia acumulada y lo fija como definitivo.","Después relaja a sus adyacentes: si pasar por él mejora la distancia, la actualiza y guarda el predecesor.","Requiere pesos no negativos. Es O(V²) con matriz u O((V + E) log V) con heap."]},
+ {q:"Búsqueda binaria: ¿cuál es la estrategia de solución? ¿Qué pasa si el arreglo no está ordenado?", r:["Es divide y conquista sobre un arreglo ordenado: se compara con el elemento del medio y se descarta la mitad donde no puede estar, hasta encontrarlo o quedar vacío.","T(n) = T(n/2) + c → Θ(log n). Con 10⁶ elementos hace como máximo ⌊log₂ n⌋ + 1 = 20 comparaciones.","Si no está ordenado compila y no tira excepción, pero puede dar un resultado erróneo porque descarta mitades que podrían contener el elemento."]},
+ {q:"¿Qué métodos de ordenamiento usan divide y conquista? ¿Son recursivos? Justificá y dá su complejidad.", r:["Merge Sort: divide en mitades, ordena cada una recursivamente y las mezcla. T(n) = 2T(n/2) + O(n) → O(n log n) siempre.","Quick Sort: elige un pivote, particiona en menores y mayores y ordena cada parte. O(n log n) en promedio y O(n²) en el peor caso (pivote extremo).","Sí, son recursivos: se llaman a sí mismos sobre subproblemas más chicos hasta el caso base de 0 o 1 elemento."]},
+ {q:"Explicá Min-Max y la poda alfa-beta. ¿La poda puede cambiar la jugada elegida?", r:["Min-Max: se genera el árbol de juego hasta las hojas o una profundidad límite, y los valores suben: los nodos MIN toman el mínimo de sus hijos y los MAX el máximo. Es O(b^d).","Alfa-beta: α es lo que MAX ya tiene asegurado (arranca en −∞) y β lo que MIN le deja (arranca en +∞). Si β ≤ α, se podan los hijos restantes.","No cambia la decisión, solo evita trabajo. En el mejor caso (las mejores jugadas primero) es O(b^(d/2))."]}
+]},
+"is": { nombre:"Ingeniería de Software", sub:"Final 17/12", mc:[
+ {q:"¿Quiénes forman el Scrum Team?", o:["Product Owner, Scrum Master y Developers","Project Manager, Analista y Testers","Sponsor, Product Owner y Usuarios","Scrum Master, Arquitecto y QA"], a:0, e:"Es un equipo chico, sin jerarquías internas. Los stakeholders participan, pero no forman parte del Scrum Team."},
+ {q:"¿Quién prioriza el Product Backlog?", o:["El Product Owner","El Scrum Master","Los Developers por votación","El sponsor del proyecto"], a:0, e:"El PO representa al negocio y maximiza el valor del producto."},
+ {q:"¿En qué se centra Kanban?", o:["En visualizar el flujo de trabajo y limitar el trabajo en curso (WIP)","En sprints de duración fija con ceremonias","En la programación en parejas","En documentar todos los requisitos antes de empezar"], a:0, e:"Usa un tablero con columnas por etapa y tarjetas que avanzan, con mejora continua."},
+ {q:"¿Cuál de estos es uno de los 5 valores de XP?", o:["Valentía","Jerarquía","Documentación exhaustiva","Planificación fija"], a:0, e:"Los cinco son comunicación, simplicidad, retroalimentación, valentía y respeto."},
+ {q:"¿Cuál es un requerimiento NO funcional?", o:["El sistema debe responder en menos de 2 segundos","El usuario puede registrarse con su e-mail","El sistema permite anotarse a una clase","El administrador puede dar de baja usuarios"], a:0, e:"Los no funcionales describen el cómo: rendimiento, seguridad, fiabilidad. Los otros tres describen qué hace el sistema."},
+ {q:"¿Qué problema de requerimientos es juntar varios requisitos en uno solo?", o:["Conjunción de requerimientos","Falta de verificabilidad","Trazabilidad","Prototipado"], a:0, e:"Los otros dos problemas típicos son la falta de claridad y la confusión de requerimientos."},
+ {q:"¿Qué es el SRS?", o:["El documento de especificación de requisitos del sistema","Un tipo de prueba de seguridad","El acuerdo de nivel de servicio","Un framework ágil"], a:0, e:"Incluye la descripción general, requisitos funcionales y no funcionales, interfaces, restricciones, rendimiento y seguridad."},
+ {q:"¿Cuál es el orden de los niveles de prueba según ISTQB?", o:["Unitarias → integración → sistema → aceptación","Aceptación → sistema → integración → unitarias","Sistema → unitarias → aceptación → integración","Integración → unitarias → sistema → aceptación"], a:0, e:"Las unitarias las hacen los desarrolladores. Las de aceptación (UAT), el usuario en su entorno."},
+ {q:"¿Qué verifica una prueba de regresión?", o:["Que lo que ya funcionaba siga funcionando después de un cambio","Que el sistema aguante una carga excesiva","Que el usuario final acepte el sistema","Que cada módulo funcione por separado"], a:0, e:"Se corre después de cada cambio, o de liberar, para detectar efectos colaterales."},
+ {q:"¿Qué busca una prueba de estrés?", o:["Exponer al sistema a una carga excesiva para encontrar su punto de falla","Medir la usabilidad con usuarios reales","Probar rápido las funciones principales","Revisar el código línea por línea"], a:0, e:"La de carga usa datos representativos para ver cuándo se degrada; la de estrés lleva al sistema más allá de lo razonable."},
+ {q:"¿En qué se basan las pruebas de caja blanca?", o:["En el conocimiento de la lógica interna del código","Solo en entradas y salidas","En la opinión del usuario final","En el rendimiento bajo carga"], a:0, e:"Prueban sentencias, ramas, condiciones y bucles. Las de caja negra no conocen el código."},
+ {q:"¿Qué es una prueba de humo?", o:["Una prueba rápida y superficial de las funciones principales","Una prueba de seguridad ante incendios del datacenter","Una prueba exhaustiva de todos los casos","Una prueba de volumen de datos"], a:0, e:"Sirve para saber si vale la pena seguir probando la versión."},
+ {q:"¿Qué diferencia a un script de un programa?", o:["Se interpreta en tiempo real, es más simple y no requiere instalación","Siempre es más rápido que un programa","Solo puede escribirse en Java","Necesita compilarse antes de ejecutarse"], a:0, e:"Los scripts son más fáciles de escribir y leer, pero más lentos porque se interpretan."},
+ {q:"¿Qué hace un gestor de paquetes?", o:["Automatiza instalar, actualizar y desinstalar software, resolviendo dependencias","Compila el código fuente a binario","Mide la performance de la aplicación","Distribuye la carga entre servidores"], a:0, e:"Se conecta a los repositorios (públicos o privados) para bajar los paquetes."},
+ {q:"¿Qué entorno es prácticamente una copia de producción para validar antes de liberar?", o:["Staging o preproducción","Desarrollo local","Testing","Sandbox del desarrollador"], a:0, e:"Los típicos son desarrollo (local), testing (QA), staging y producción."},
+ {q:"En el contexto de entrega de software, ¿qué significa CD?", o:["Continuous Delivery (entrega continua)","Code Documentation","Central Database","Change Detection"], a:0, e:"Busca que el código esté siempre listo para desplegar, con incrementos chicos y pruebas automatizadas."},
+ {q:"¿Cuál es la primera fase de la entrega continua?", o:["Integración continua (CI)","Despliegue automatizado","Monitoreo","Aceptación del usuario"], a:0, e:"El orden es CI → pruebas automatizadas → despliegue automatizado → monitoreo y feedback."},
+ {q:"¿Para qué sirve un balanceador de carga?", o:["Para distribuir las solicitudes entre varios servidores y absorber picos","Para comprimir los datos de la base","Para versionar el código","Para cifrar las conexiones"], a:0, e:"Sus funciones son distribución de carga, tolerancia a fallos (failover), sesiones persistentes y monitoreo."},
+ {q:"¿Cuál de estos es un balanceador de carga open source?", o:["HAProxy","Jenkins","Git","Jira"], a:0, e:"Otros ejemplos son NGINX y F5, este último para empresas grandes."},
+ {q:"¿Cuál es un riesgo del BPO?", o:["Excesiva dependencia del proveedor","Mejor time to market","Ahorro de costos","Acceso a talento especializado"], a:0, e:"Los riesgos son confidencialidad y privacidad, pérdida de personal especializado y lock-in. Las otras opciones son beneficios."},
+ {q:"¿Qué relación hay entre SLA y KPI?", o:["El SLA fija las obligaciones y los KPI miden su cumplimiento","Son sinónimos","El KPI es el contrato y el SLA la métrica","El SLA solo aplica a desarrollo interno"], a:0, e:"Las métricas típicas son disponibilidad, tasa de errores, tiempo de respuesta y de resolución, y satisfacción."},
+ {q:"¿Cuáles son los tres tipos de SLA?", o:["Basado en el cliente, basado en el servicio y multinivel","Fijo, variable y mixto","Interno, externo y público","Bronce, plata y oro"], a:0, e:"El multinivel combina el nivel corporativo, el de cliente y el de servicio."},
+ {q:"¿Cuál de estos NO es un componente de la gobernanza de TI?", o:["Programación en parejas","Alineación estratégica","Gestión de riesgos","Medición del desempeño"], a:0, e:"Los 5 componentes son alineación estratégica, entrega de valor, gestión de riesgos, gestión de recursos y medición del desempeño."},
+ {q:"¿Cómo nació COBIT?", o:["Como marco de auditoría de TI, ampliado después a la gobernanza","Como metodología ágil","Como norma de calidad de software","Como lenguaje de programación"], a:0, e:"Hoy abarca toda la gobernanza, con foco en la gestión de riesgos. ISO/IEC 38500 es la norma de gobierno corporativo de TI."},
+ {q:"De los 5 niveles de administración del riesgo, ¿en cuáles hay que trabajar para tener éxito?", o:["Prevención y eliminación de la causa raíz","Administración de crisis y corrección de fallas","Solo atenuación de riesgos","En ninguno: los riesgos se aceptan"], a:0, e:"Del 1 al 5: crisis, corrección de fallas, atenuación, prevención y eliminación de la causa raíz. Quedarse en 1 a 3 es perder la batalla."},
+ {q:"¿Cómo se calcula la exposición al riesgo?", o:["Probabilidad × pérdida","Probabilidad + impacto","Impacto ÷ probabilidad","Cantidad de riesgos × presupuesto"], a:0, e:"Con eso se ordenan y priorizan los riesgos, por ejemplo en una matriz de riesgo."},
+ {q:"¿Cuál es un riesgo del NEGOCIO?", o:["Construir un sistema excelente que nadie quiere usar","Que se atrase el cronograma","Usar una tecnología obsoleta","Que falte personal en el equipo"], a:0, e:"Atraso y personal son riesgos del proyecto; la tecnología obsoleta es un riesgo del producto (técnico)."},
+ {q:"¿Qué es la auditoría basada en riesgos?", o:["Priorizar los recursos de auditoría en las áreas de mayor riesgo","Auditar todos los procesos por igual cada año","Auditar solo cuando ocurre un incidente","Una prueba de penetración"], a:0, e:"Pasos: entender la organización → evaluar riesgos → planificar según prioridad → ejecutar → informar → seguimiento. Se relaciona con ISO 37301."}
+], ab:[
+ {q:"¿Cuáles son las fases del ciclo de vida del desarrollo de software? Describí brevemente cada una.", r:["Requisitos: relevar y analizar las necesidades del usuario (qué debe hacer).","Análisis y diseño: modelar el sistema y la arquitectura (cómo se implementa).","Implementación: escribir el código.","Pruebas: verificar y validar que cumpla los requisitos.","Mantenimiento: corregir errores y adaptar a nuevos requisitos (es continuo)."]},
+ {q:"¿Cuál es la diferencia entre requisitos funcionales y no funcionales? Dá un ejemplo de cada uno.", r:["Funcionales: qué debe hacer el sistema (funciones, comportamiento, interacción). Deben ser verificables. Ejemplo: \"el usuario se inscribe a una clase\".","No funcionales: cómo lo hace, en términos de calidad y restricciones (rendimiento, fiabilidad, seguridad, usabilidad). Ejemplo: \"la página carga en menos de 2 s\".","Los funcionales se validan con pruebas funcionales; los no funcionales, con pruebas de desempeño, seguridad, etc."]},
+ {q:"SCRUM: ¿cómo está compuesto el Scrum Team y cuáles son sus artefactos?", r:["Product Owner: representa al negocio, maximiza el valor y prioriza el backlog. Scrum Master: facilita, remueve impedimentos y protege al equipo. Developers: equipo autoorganizado que construye el incremento.","Artefactos: Product Backlog (lista priorizada de todo el producto), Sprint Backlog (ítems elegidos para el sprint y su plan) e Incremento (producto terminado al final del sprint).","Ceremonias: planning, daily, review y retrospective."]},
+ {q:"¿Cuáles son las principales metodologías ágiles? Describí brevemente cada una.", r:["Scrum: sprints iterativos e incrementales, con roles y ceremonias.","Kanban: tablero para visualizar el flujo, límite de WIP y mejora continua.","XP: calidad técnica y respuesta al cambio. Valores: comunicación, simplicidad, feedback, valentía y respeto. Prácticas: pair programming, TDD, integración continua e historias de usuario."]},
+ {q:"¿Qué es un entorno de desarrollo y cuáles son sus características? Nombrá los entornos típicos.", r:["Es el conjunto de herramientas y recursos de hardware y software para crear y ejecutar una aplicación.","Características: separación de configuración y datos, control de versiones, estandarización y consistencia, control de accesos y seguridad, gestión de dependencias, monitoreo y registro.","Entornos: desarrollo (local), testing (QA), staging o preproducción (copia de producción) y producción."]},
+ {q:"¿Qué significa la sigla CD, en qué consiste y cuáles son sus fases? ¿Qué principios tiene la entrega de software?", r:["CD es Continuous Delivery: automatizar y agilizar los lanzamientos para que el código esté siempre listo para desplegar, con incrementos chicos y frecuentes.","Fases: integración continua → pruebas automatizadas → despliegue automatizado → monitoreo y retroalimentación (ciclo iterativo).","Principios de la entrega: transparencia y visibilidad, frecuencia y previsibilidad, garantía de calidad y pruebas, retroalimentación y mejora."]},
+ {q:"Proceso de tercerización: ¿en qué consiste la externalización y cuáles son sus desafíos? ¿Qué riesgos tiene el BPO?", r:["Externalizar es delegar en terceros actividades, tareas o proyectos de software, buscando costos, talento, agilidad e innovación.","Desafíos: comunicación y diferencias culturales, garantía de calidad, seguridad y cumplimiento normativo, integración de equipos y cultura, claridad de requisitos y gestión de expectativas.","Riesgos del BPO: confidencialidad y privacidad, pérdida de personal especializado propio y dependencia del proveedor."]},
+ {q:"Describí qué entendés por SLA y qué debe incluir.", r:["Es el acuerdo formal entre proveedor y cliente que define el servicio, los niveles acordados (objetivos SMART y medibles) y las penalidades si no se cumplen.","Incluye: descripción del servicio, exclusiones, objetivos de nivel, seguridad, recuperación ante desastres, seguimiento e informes, sanciones y firmas.","Se monitorea con KPIs: disponibilidad, tiempos de respuesta y resolución, tasa de errores y satisfacción. Tipos: por cliente, por servicio y multinivel."]},
+ {q:"Gobernanza de TI: ¿qué es, cuáles son sus componentes y qué marcos existen?", r:["Es el conjunto de procedimientos, estructuras y comportamientos para evaluar, dirigir y controlar el uso de TI según los objetivos de la organización.","Componentes: alineación estratégica, entrega de valor, gestión de riesgos, gestión de recursos y medición del desempeño.","Marcos: ISO/IEC 38500 y COBIT (nacido como marco de auditoría, con foco en riesgos).","La gobernanza decide qué y por qué; la gestión decide cómo."]},
+ {q:"Describí los niveles de administración de riesgos y el proceso de gestión de riesgos.", r:["Niveles: 1) administración de crisis, 2) corrección de fallas, 3) atenuación, 4) prevención, 5) eliminación de la causa raíz. Para tener éxito hay que trabajar en 4 y 5.","Proceso: identificar → analizar (probabilidad, impacto y exposición = P × pérdida, priorizar) → planificar (evitar, mitigar, contingencia) → seguimiento → control.","Categorías: riesgos del proyecto, del producto y del negocio."]}
+]},
+"dpt": { nombre:"Dirección de Proyectos", sub:"Dirección de Proyectos de Tecnología · final 9/12", mc:[
+ {q:"¿Cuál de estas actividades es una operación y no un proyecto?", o:["Facturar mensualmente a los clientes","Desarrollar un nuevo sistema","Lanzar un producto","Migrar la infraestructura a la nube"], a:0, e:"La operación es continua y repetitiva; el proyecto es temporal y produce un resultado único."},
+ {q:"¿Qué es un MVP?", o:["La primera liberación con el mínimo de funcionalidades que ya aportan valor","La versión final con todas las funcionalidades","El plan de gestión del proyecto","El miembro más valioso del equipo"], a:0, e:"Producto mínimo viable."},
+ {q:"¿Cuál de estos NO es un dominio de desempeño según la materia?", o:["Comunicaciones","Interesados","Cronograma","Finanzas"], a:0, e:"Los siete dominios son gobernanza, interesados, alcance, recursos, cronograma, riesgos y finanzas."},
+ {q:"¿Cuáles son los cinco grupos de procesos?", o:["Inicio, planificación, ejecución, monitoreo y control, y cierre","Análisis, diseño, desarrollo, prueba y despliegue","Alcance, tiempo, costo, calidad y riesgo","Idea, prototipo, MVP, lanzamiento y escala"], a:0, e:"Los dominios de desempeño se cruzan con estos grupos de procesos."},
+ {q:"¿Qué diferencia hay entre programa y portafolio?", o:["El programa agrupa proyectos afines; el portafolio agrupa programas y proyectos para los objetivos estratégicos","Son sinónimos","El portafolio es un proyecto grande","El programa es el software del proyecto"], a:0, e:"Los programas se gestionan en conjunto; el portafolio se alinea con la estrategia."},
+ {q:"¿Qué es la triple restricción?", o:["Alcance, tiempo y costo, con la calidad en el centro","Sponsor, PM y equipo","Inicio, ejecución y cierre","Riesgo, valor y calidad"], a:0, e:"Cambiar uno de los tres afecta a los otros."},
+ {q:"¿En qué tipo de organización tiene más autoridad el PM?", o:["Orientada a proyectos","Funcional","Matricial débil","En todas tiene la misma"], a:0, e:"En la matricial comparte la autoridad con los gerentes funcionales."},
+ {q:"¿Qué pasa con el project charter una vez aprobado?", o:["No se modifica: es fundacional y los documentos posteriores lo refinan","Se actualiza en cada sprint","Lo reemplaza el cronograma","Se archiva y deja de tener validez"], a:0, e:"No es un documento vivo."},
+ {q:"En la matriz poder/interés, ¿cómo se trata a un interesado con mucho poder y mucho interés?", o:["Gestionar de cerca","Mantener satisfecho","Mantener informado","Monitorear"], a:0, e:"Mucho poder y poco interés: mantener satisfecho. Poco poder y mucho interés: mantener informado. Poco y poco: monitorear."},
+ {q:"¿Cómo se trata a un interesado con mucho poder pero poco interés?", o:["Mantener satisfecho","Gestionar de cerca","Mantener informado","Ignorarlo"], a:0, e:"No hay que aburrirlo, pero nunca ignorarlo."},
+ {q:"¿Cuántos canales de comunicación hay en un equipo de 6 personas?", o:["15","6","12","30"], a:0, e:"n(n − 1)/2 = 6 × 5 / 2 = 15. Por eso se definen referentes en lugar de que todos hablen con todos."},
+ {q:"Según Mehrabian, ante una discrepancia, ¿cuánto pesa cada aspecto del mensaje?", o:["7 % palabras, 38 % tono, 55 % lenguaje corporal","55 % palabras, 38 % tono, 7 % corporal","33 % cada uno","90 % palabras, 10 % tono"], a:0, e:"De ahí la importancia de la escucha activa y de la comunicación no verbal."},
+ {q:"¿Qué diferencia hay entre la comunicación push y la pull?", o:["Push se envía al receptor; pull la consulta el receptor cuando la necesita","Push es oral y pull es escrita","Push es interna y pull externa","Son lo mismo"], a:0, e:"Las dos son parte del modelo lineal. El interactivo agrega retroalimentación."},
+ {q:"¿Qué es el scope creep?", o:["Aceptar cambios sin ajustar cronograma, presupuesto y recursos","Reducir el alcance para llegar a tiempo","El documento que define el alcance","Un tipo de dependencia entre tareas"], a:0, e:"Es la corrupción del alcance. Todo cambio debe evaluarse por su impacto y decidirse (aceptar, reformular o denegar)."},
+ {q:"¿De quién es responsabilidad el alcance del PRODUCTO?", o:["De los especialistas: analista, product owner, arquitecto","Del PM","Del sponsor","Del cliente final"], a:0, e:"El PM es responsable del alcance del proyecto (el trabajo); el del producto son las características y funciones."},
+ {q:"¿Qué es un paquete de trabajo?", o:["El nivel más bajo de la WBS, donde se estiman tareas, recursos, costo y riesgos","Un contrato con un proveedor","El conjunto de entregables de gestión","Un sprint"], a:0, e:"La WBS descompone el proyecto en un árbol hasta llegar a los paquetes de trabajo."},
+ {q:"Estimación PERT con O = 4, MP = 6 y P = 14 días. ¿Cuál es la duración?", o:["7 días","8 días","6 días","24 días"], a:0, e:"(O + 4·MP + P) / 6 = (4 + 24 + 14) / 6 = 42 / 6 = 7."},
+ {q:"¿Qué margen tiene una estimación de orden de magnitud?", o:["−25 % a +75 %","−5 % a +10 %","−10 % a +25 %","±1 %"], a:0, e:"La presupuestaria va de −10 % a +25 % y la definitiva de −5 % a +10 % (AACE)."},
+ {q:"\"Cuando termina la puesta en marcha del sistema nuevo, termina la baja del viejo.\" ¿Qué dependencia es?", o:["Fin-fin (FF)","Fin-comienzo (FC)","Comienzo-comienzo (CC)","Comienzo-fin (CF)"], a:0, e:"La terminación de A determina la terminación de B."},
+ {q:"¿Qué es el camino crítico?", o:["La cadena de tareas de mayor duración, con holgura cero","Las tareas más caras del proyecto","Las tareas con más recursos asignados","El plan de contingencia"], a:0, e:"Cualquier atraso en él atrasa el proyecto."},
+ {q:"¿Qué consecuencia típica tiene comprimir el cronograma con crashing?", o:["Aumentan los costos","Aumentan los riesgos por paralelizar","Se reduce el alcance","No tiene ninguna"], a:0, e:"Crashing agrega recursos a tareas críticas y sube el costo. Fast tracking paraleliza tareas y sube el riesgo."},
+ {q:"¿Qué duración tiene un hito?", o:["Cero","Un día","Una semana","Lo que dure la fase"], a:0, e:"Marca un punto importante en el tiempo."},
+ {q:"¿Quién gestiona la reserva de contingencia y para qué se usa?", o:["El PM, para riesgos identificados","La alta gerencia, para imprevistos","El cliente, para cambios de alcance","Finanzas, para la inflación"], a:0, e:"Forma parte del presupuesto. La reserva de gestión es de la alta gerencia, cubre imprevistos y queda fuera de la línea base."},
+ {q:"¿Qué es un costo hundido?", o:["Un costo ya incurrido que no cambia con la decisión","Un costo que se recupera al final","El costo de la mejor alternativa descartada","Un costo variable"], a:0, e:"No debería influir en la decisión. El de la alternativa descartada es el costo de oportunidad."},
+ {q:"¿En qué tipo de contrato asume el proveedor el mayor riesgo?", o:["Precio fijo","Costos reembolsables","Tiempo y materiales","Todos por igual"], a:0, e:"En costos reembolsables el riesgo es del comprador; tiempo y materiales está en el medio."},
+ {q:"¿Para qué sirve un RFQ?", o:["Para pedir cotización de un producto o servicio estándar","Para pedir información del mercado","Para detallar el alcance a adquirir","Para pedir propuestas técnicas con solución"], a:0, e:"RFI = información del mercado; SOW = alcance detallado; RFP = propuesta técnica con presupuesto."},
+ {q:"En una matriz RACI, ¿qué significa la A?", o:["Accountable: aprueba y responde por el resultado (uno solo por actividad)","Assistant: ayuda a quien ejecuta","Analyst: releva requisitos","Auditor: controla al final"], a:0, e:"R realiza, A aprueba, C es consultado e I es informado."},
+ {q:"¿Qué hace un líder servicial?", o:["Elimina obstáculos, protege al equipo y le da autonomía","Controla cada tarea con microgestión","Delega toda la responsabilidad en el sponsor","Toma todas las decisiones solo"], a:0, e:"Busca que el equipo quiera (motivación), sepa (capacitación) y pueda (recursos) hacer el trabajo."},
+ {q:"¿Qué muestra la curva S?", o:["Los costos o valores planeados acumulados a lo largo del proyecto","La satisfacción de los interesados","La curva de aprendizaje del equipo","El camino crítico"], a:0, e:"Sale de combinar el presupuesto con el cronograma."},
+ {q:"¿Qué diferencia hay entre CapEx y OpEx?", o:["CapEx es inversión en bienes que aumentan la capacidad; OpEx son costos operativos recurrentes","CapEx es mensual y OpEx anual","Son lo mismo con distinto nombre","OpEx es solo hardware"], a:0, e:"CapEx: infraestructura, hardware, servicios para ejecutar el proyecto. OpEx: licencias, mantenimiento, alquileres."}
+], ab:[
+ {q:"Definí proyecto y explicá en qué se diferencia de una operación. Dá un ejemplo de cada uno.", r:["Proyecto: emprendimiento temporal en un contexto único que genera valor entregando un producto, servicio o resultado único.","Operación: continua y repetitiva; mantiene funcionando a la organización.","Ejemplos: desarrollar un sistema es un proyecto; facturar a los clientes es una operación."]},
+ {q:"¿Qué es el project charter y qué contiene? ¿Por qué no es un documento vivo?", r:["Es el documento que autoriza formalmente el proyecto y le da autoridad al PM.","Contiene: objetivos, entregables principales, sponsor, responsables, recursos clave, alcance y exclusiones, hitos, presupuesto, supuestos, restricciones y riesgos preliminares.","Es fundacional: una vez aprobado no se modifica; los documentos de planificación posteriores lo refinan."]},
+ {q:"Explicá la matriz poder/interés y la matriz de involucramiento de los interesados.", r:["Poder/interés: mucho y mucho → gestionar de cerca; mucho poder y poco interés → mantener satisfecho; poco poder y mucho interés → mantener informado; poco y poco → monitorear.","Involucramiento: niveles desconocedor, opositor, neutral, apoyo y líder. Se marca la posición actual (A) y la deseada (D) de cada interesado y se planifican acciones para acercarlas.","Todo esto se registra en el registro de interesados, que se monitorea porque las posiciones cambian."]},
+ {q:"Comunicaciones: ¿cómo se calcula la cantidad de canales y qué modelos de comunicación existen?", r:["Canales = n(n − 1)/2 (con 4 personas son 6; con 6 son 15). La complejidad crece rápido, por eso se definen referentes.","Modelo lineal o simple: no verifica el entendimiento; puede ser push (enviada) o pull (consultada).","Modelo interactivo: agrega retroalimentación para confirmar que se entendió.","Mehrabian: 7 % palabras, 38 % tono, 55 % corporal. El kick-off es el gran hito de comunicación."]},
+ {q:"¿Qué es la trazabilidad de requisitos y por qué es importante la calidad de los requisitos?", r:["Trazabilidad: vincular necesidades → requisitos → entregables → actividades. Todo requisito se satisface con entregables y todo entregable se elabora con actividades.","Calidad: corregir tarde un requisito mal definido es carísimo (curva del costo del cambio, regla 1-10-100).","Hay que convertir la necesidad, que suele ser ambigua, en una característica medible asignada a un objeto (por ejemplo, carga del formulario ≤ 1 s)."]},
+ {q:"¿Qué es la WBS (EDT) y qué contiene el enunciado del alcance?", r:["WBS: descomposición jerárquica en árbol del proyecto hasta los paquetes de trabajo, donde se estiman tareas, recursos, costo y riesgos. Es una herramienta visual y colaborativa.","Enunciado del alcance: descripción, requisitos (verbos), entregables (sustantivos), criterios de aceptación, factores críticos de éxito, supuestos, restricciones y exclusiones."]},
+ {q:"¿Cómo se gestiona un cambio de alcance en un proyecto predictivo? ¿Qué es el scope creep?", r:["La solicitud de cambio se analiza por su impacto en alcance, costo, cronograma, recursos y riesgos.","La decide el sponsor o un comité de cambios: aceptarla, pedir que se reformule o denegarla. Después se actualiza el registro, se informa y se implementa (lógica costo/beneficio).","Scope creep: aceptar cambios sin ajustar cronograma, presupuesto y recursos."]},
+ {q:"Explicá el camino crítico, la holgura y las técnicas de compresión del cronograma.", r:["Holgura: cuánto puede atrasarse una tarea sin afectar a otras ni a la fecha de fin.","Camino crítico: la cadena más larga con holgura cero. Determina la duración y cualquier atraso ahí atrasa el proyecto.","Crashing: agregar recursos a tareas críticas (sube el costo). Fast tracking: paralelizar tareas en secuencia (sube el riesgo)."]},
+ {q:"Explicá las reservas presupuestarias y compará los tipos de contrato según quién asume el riesgo.", r:["Reserva de contingencia: para riesgos identificados; la gestiona el PM y forma parte del presupuesto. Reserva de gestión: para imprevistos; la maneja la alta gerencia y queda fuera de la línea base.","Precio fijo: alcance claro; el riesgo es del proveedor. Costos reembolsables: mucha incertidumbre; el riesgo es del comprador. Tiempo y materiales: híbrido, para cuando no hay un SOW preciso."]},
+ {q:"¿Qué diferencia hay entre gestionar y liderar? ¿Qué caracteriza a un equipo de alto rendimiento?", r:["Gestionar: se enfoca en los medios (procesos, planificar, coordinar, medir). Liderar: se enfoca en las personas (influir, motivar, escuchar, habilitar). El PM tiene que equilibrar ambas.","Liderazgo servicial: elimina obstáculos, protege al equipo y le da autonomía.","Alto rendimiento: comunicación abierta, entendimiento y propiedad compartidos, confianza, colaboración, adaptabilidad, resiliencia, empoderamiento y reconocimiento."]}
+]},
+"bd2": { nombre:"Ingeniería de Datos II", sub:"Final 21/12", mc:[
+ {q:"¿Cuáles son las 3 V del Big Data que impulsaron NoSQL?", o:["Volumen, variedad y velocidad","Valor, veracidad y visibilidad","Volumen, validez y versión","Velocidad, virtualización y vigencia"], a:0, e:"Junto con las apps web globales que necesitaban alta disponibilidad y escalar horizontalmente."},
+ {q:"¿Qué es escalar horizontalmente?", o:["Agregar más nodos y repartir los datos entre ellos","Agregar CPU y RAM a un único servidor","Pasar de NoSQL a relacional","Comprimir los datos"], a:0, e:"Escalar verticalmente es potenciar una sola máquina, que tiene límites y es un punto único de falla."},
+ {q:"¿Qué diferencia hay entre la C de ACID y la C de CAP?", o:["ACID: la transacción deja la base en un estado válido. CAP: todas las réplicas devuelven el mismo dato","Son exactamente lo mismo","ACID habla de réplicas y CAP de transacciones","CAP no tiene C"], a:0, e:"Es una confusión muy típica en los exámenes."},
+ {q:"¿Cómo se clasifican MongoDB y Cassandra según CAP?", o:["MongoDB CP y Cassandra AP","MongoDB AP y Cassandra CP","Las dos son CA","Las dos son CP"], a:0, e:"Cassandra prioriza disponibilidad, con consistencia eventual y configurable."},
+ {q:"¿Qué diferencia hay entre replicación y sharding?", o:["La replicación copia todos los datos en cada nodo; el sharding reparte partes distintas","Son sinónimos","El sharding copia y la replicación reparte","La replicación solo existe en bases relacionales"], a:0, e:"La replicación da disponibilidad y el sharding da escalabilidad."},
+ {q:"¿Qué es un hot spot en sharding?", o:["Un shard que recibe mucha más carga porque la clave de partición reparte mal","Un nodo caído","Una réplica desactualizada","Un índice mal creado"], a:0, e:"Se evita eligiendo una buena clave de partición."},
+ {q:"¿Qué caracteriza a la replicación síncrona?", o:["Espera la confirmación de las réplicas: consistencia fuerte y más latencia","Solo espera al principal y puede perder escrituras","No usa red","Solo sirve para lecturas"], a:0, e:"La asíncrona es más rápida, pero puede perder las últimas escrituras si el principal falla."},
+ {q:"¿Qué es la consistencia eventual?", o:["Si no hay nuevas escrituras, las réplicas terminan convergiendo al mismo valor","Las réplicas son siempre idénticas","Los datos se borran eventualmente","Solo se puede leer una vez por día"], a:0, e:"Mientras tanto se puede leer un dato desactualizado. Read-your-writes garantiza ver al menos las propias escrituras."},
+ {q:"¿Qué es BSON?", o:["La representación binaria de JSON que usa MongoDB","Un lenguaje de consultas de grafos","El formato de Redis","Un tipo de índice"], a:0, e:"Agrega tipos de datos y se recorre de forma más eficiente."},
+ {q:"¿Qué diferencia hay entre deleteMany({}) y drop() en MongoDB?", o:["deleteMany({}) borra los documentos y deja la colección; drop() elimina la colección","Son iguales","drop() borra solo un documento","deleteMany borra la base completa"], a:0, e:"drop() también elimina los índices de la colección."},
+ {q:"¿Cómo se consulta un campo anidado en MongoDB?", o:["Con notación punto entre comillas: find({\"direccion.ciudad\": \"Morón\"})","Con JOIN","Con find({direccion: ciudad})","No se puede"], a:0, e:"Sin comillas, la clave con punto no es un nombre válido en JavaScript."},
+ {q:"¿Para qué sirve $unwind en un pipeline de agregación?", o:["Para descomponer un array en documentos individuales","Para ordenar los resultados","Para unir dos colecciones","Para borrar campos"], a:0, e:"Después se puede agrupar con $group, por ejemplo $sum: 1 para contar."},
+ {q:"¿Qué diferencia hay entre $match y $project?", o:["$match filtra documentos; $project elige qué campos mostrar","Son iguales","$project filtra y $match ordena","$match agrupa"], a:0, e:"Conviene poner $match temprano en el pipeline para procesar menos documentos."},
+ {q:"¿Qué es un índice parcial?", o:["Un índice que solo incluye los documentos que cumplen una condición","Un índice sobre la mitad de los campos","Un índice que se borra solo","Un índice de texto"], a:0, e:"Se define con partialFilterExpression; por ejemplo, solo montos mayores a un millón."},
+ {q:"En el grafo de propiedades (Neo4j), ¿qué tiene que tener una relación?", o:["Exactamente un tipo y una dirección; puede tener propiedades","Varios tipos y ninguna dirección","Solo un ID numérico","Una tabla intermedia"], a:0, e:"A diferencia del modelo relacional, las relaciones se guardan explícitamente."},
+ {q:"¿Qué significa que Cypher sea declarativo?", o:["Que se describe el patrón buscado, no cómo recorrer el grafo","Que solo permite declarar variables","Que es igual a SQL","Que no tiene MATCH"], a:0, e:"Ejemplo: MATCH (e:Empresa)-[:USA_CUENTA]->(c)<-[:USA_CUENTA]-(otra) RETURN e, otra."},
+ {q:"En Redis, ¿qué pasa si guardás dos valores con la misma clave?", o:["El segundo sobrescribe al primero","Se guardan los dos en una lista","Da error","Se concatenan"], a:0, e:"La clave es única."},
+ {q:"¿Qué devuelve TTL en Redis si la clave no existe?", o:["−2","−1","0","null"], a:0, e:"−1 significa que la clave existe pero no tiene expiración."},
+ {q:"¿Qué hace INCR sobre una clave que no existe?", o:["La crea en 0 y la incrementa a 1","Da error","Devuelve null","La crea en 1 y la incrementa a 2"], a:0, e:"Junto con EXPIRE sirve para contar intentos fallidos en una ventana de tiempo."},
+ {q:"¿Qué hace SINTER en Redis?", o:["Devuelve los elementos comunes entre sets","Agrega un miembro","Verifica si un elemento pertenece","Ordena un set"], a:0, e:"SADD agrega sin duplicar y SISMEMBER verifica pertenencia."},
+ {q:"¿Cuál es la regla de diseño en Cassandra?", o:["Primero la consulta, después la tabla: una tabla por patrón de consulta","Normalizar hasta la 3FN","Una sola tabla para todo","Usar JOINs para evitar duplicar"], a:0, e:"Se duplica información a propósito para que cada consulta lea una sola partición."},
+ {q:"En PRIMARY KEY ((usuario_id, fecha), evento_ts, evento_id), ¿cuál es la clave de partición?", o:["(usuario_id, fecha)","usuario_id","evento_ts","evento_id"], a:0, e:"evento_ts y evento_id son claves de clustering: ordenan dentro de la partición. La fecha hace de bucket para que la partición no crezca sin límite."},
+ {q:"¿Qué indica tener que usar ALLOW FILTERING en Cassandra?", o:["Que la consulta no está soportada por la clave y recorre muchas particiones","Que la consulta es óptima","Que hay un índice","Que la tabla está vacía"], a:0, e:"Conviene crear otra tabla diseñada para esa consulta."},
+ {q:"¿Qué dice el teorema CAP?", o:["Ante una partición de red hay que elegir entre consistencia y disponibilidad","Siempre se pueden tener las tres propiedades","Solo aplica a bases relacionales","Las particiones nunca ocurren"], a:0, e:"\"Elegir 2 de 3\" es engañoso: la P no es opcional en un sistema distribuido. Lo formalizaron Gilbert y Lynch a partir de la conjetura de Brewer."},
+ {q:"¿Qué condición de quorum garantiza leer el último dato escrito?", o:["W + R > N","W + R < N","W = R = 1","R > N"], a:0, e:"Siempre hay al menos un nodo en común entre los que escribieron y los que se leen."},
+ {q:"¿Qué hace nx=True en un set de Redis (redis-py)?", o:["Crea la clave solo si no existe","La borra después de un tiempo","La crea siempre, aunque exista","La convierte en número"], a:0, e:"Sirve para que dos usuarios no bloqueen el mismo turno a la vez, combinado con un TTL."},
+ {q:"¿Qué es la persistencia políglota?", o:["Usar varios tipos de bases en una misma solución, cada una para lo que mejor hace","Traducir los datos a varios idiomas","Guardar el mismo dato en todas las bases","Usar un ORM"], a:0, e:"Ejemplo del laboratorio: MongoDB para las reservas confirmadas y Redis para el bloqueo temporal con TTL."},
+ {q:"¿Para qué sirve Redis Sentinel?", o:["Para monitorear instancias y hacer failover automático","Para comprimir claves","Para hacer consultas SQL","Para particionar datos"], a:0, e:"En Cassandra, el estado del cluster se ve con nodetool."}
+], ab:[
+ {q:"¿Por qué surgió NoSQL? ¿Reemplaza al modelo relacional? ¿Cuándo conviene cada uno?", r:["Por las 3 V del Big Data y por apps web globales que necesitaban alta disponibilidad y escalar horizontalmente. Lo inspiraron Bigtable y Dynamo.","No lo reemplaza, lo complementa: se elige según el problema (persistencia políglota).","Relacional: esquema fijo, joins, consultas ad-hoc, transacciones críticas (bancos, ERP). NoSQL: gran volumen, esquemas cambiantes, alta disponibilidad, escala horizontal."]},
+ {q:"Explicá la diferencia entre replicación y sharding, y entre replicación síncrona y asíncrona.", r:["Replicación: copia los datos en varios nodos (disponibilidad, failover). Sharding: reparte partes distintas de los datos entre nodos (escalabilidad); ojo con los hot spots.","Síncrona: espera la confirmación de las réplicas (consistencia fuerte, más latencia). Asíncrona: solo espera al principal (más rápida, puede perder las últimas escrituras).","Esquemas: primaria-secundaria (con failover) y multi-master (escala escrituras, pero tiene conflictos)."]},
+ {q:"Explicá el teorema CAP y clasificá MongoDB y Cassandra. ¿Por qué \"elegir 2 de 3\" es engañoso?", r:["C = todas las réplicas devuelven el mismo dato; A = toda petición recibe respuesta; P = el sistema sigue funcionando ante una partición de red.","En un sistema distribuido las particiones son inevitables, así que la elección real, cuando ocurre una, es entre C y A.","MongoDB es CP (replica set con un primario). Cassandra es AP, con consistencia configurable por operación (ONE, QUORUM, ALL)."]},
+ {q:"Diseño documental: ¿cuándo conviene embeber y cuándo referenciar? Dá un ejemplo.", r:["El diseño es orientado a consultas: la forma del documento depende de las preguntas que se van a responder.","Embeber (desnormalizar): cuando se lee todo junto y el array está acotado, por ejemplo un proceso con sus eventos.","Separar (un documento por evento): cuando el análisis es transversal (por usuario, área o fecha) o el array crecería sin límite."]},
+ {q:"Armá un pipeline de agregación para contar eventos por tipo dentro de un array y explicá cada etapa.", r:["$match: filtra los documentos que interesan (conviene al principio).","$unwind: descompone el array de eventos en un documento por evento.","$group: { _id: \"$eventos.tipo\", total: { $sum: 1 } } agrupa por tipo y cuenta.","$sort y $project para ordenar y elegir qué campos mostrar."]},
+ {q:"¿En qué se diferencia el modelo de grafos del relacional? Dá un caso donde los grafos aportan más valor.", r:["En grafos las relaciones se guardan explícitamente, con tipo, dirección y propiedades. En el relacional se reconstruyen con claves y JOINs.","Cypher es declarativo: se describe el patrón buscado.","Casos: fraude con cuentas compartidas (dos empresas que usan la misma cuenta), colusión entre proveedores, beneficiarios finales ocultos, recomendaciones. Lo que interesa conectar se modela como nodo (cuentas, domicilios)."]},
+ {q:"Redis: ¿cómo implementarías un límite de intentos fallidos de login? Explicá los comandos.", r:["Con INCR intentos:<usuario>: si la clave no existe, la crea en 0 y la incrementa a 1.","Con EXPIRE intentos:<usuario> <segundos>: la ventana se borra sola. TTL devuelve −1 si no tiene expiración y −2 si la clave no existe.","Si el contador supera el umbral, se bloquea. Redis sirve por ser clave-valor en memoria: acceso directo y muy rápido."]},
+ {q:"Cassandra: explicá la clave de partición y la de clustering con un ejemplo de serie temporal.", r:["La clave de partición decide en qué partición y nodo se guardan las filas, y agrupa lo que se lee junto. La de clustering ordena dentro de la partición.","Ejemplo: PRIMARY KEY ((usuario_id, fecha), evento_ts, evento_id). La fecha hace de bucket diario para que la partición no crezca sin límite.","La regla es primero la consulta y después la tabla. Si hace falta ALLOW FILTERING, falta una tabla para esa consulta."]},
+ {q:"¿Qué es el modelo quorum y por qué importa la consistencia en un sistema de reservas de turnos?", r:["Quorum: un mínimo de nodos tiene que confirmar la operación. Con W + R > N se garantiza leer el último dato.","En turnos, leer una réplica desactualizada podría mostrar libre un turno ya reservado y generar una doble reserva.","Se necesita consistencia fuerte en la lectura para confirmar, o un bloqueo previo."]},
+ {q:"Explicá la persistencia políglota con el caso del sistema de turnos (MongoDB + Redis).", r:["Es usar más de un tipo de base en una solución, cada una para lo que mejor resuelve.","MongoDB guarda lo persistente: las reservas confirmadas y su historial. Conviene el borrado lógico (estado \"cancelado\") para mantener la trazabilidad.","Redis bloquea temporalmente el turno mientras se confirma: set con nx=True (solo si no existe) y TTL para que se libere solo."]}
+]}
+};
+
+const ESCALA = [[0,59,"Desaprobado"],[60,64,"4"],[65,69,"5"],[70,74,"6"],[75,79,"7"],[80,87,"8"],[88,94,"9"],[95,100,"10"]];
+const N_MC = 15, N_AB = 5, PTS_MC = 4, PTS_AB = 8, MINUTOS = 120;
+const LS = "simulacros-uade-v1";
+
+let estado = { materia: "p3", fase: "inicio", examen: null, fin: 0, timer: null, confirmando: false };
+
+function leer(){ try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch(e){ return {}; } }
+function guardar(d){ try { localStorage.setItem(LS, JSON.stringify(d)); } catch(e){} }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function mezclar(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function nota(p){ const f = ESCALA.find(([a,b]) => p >= a && p <= b); return f ? f[2] : "Desaprobado"; }
+
+function renderMaterias(){
+  const h = leer();
+  const nav = document.getElementById("materias");
+  nav.innerHTML = Object.entries(BANCO).map(([k, m]) => {
+    const ult = (h[k] || [])[0];
+    const meta = ult ? `Último: ${ult.nota === "Desaprobado" ? "desaprobado" : "nota " + ult.nota} (${ult.puntos}/100) · ${ult.fecha}` : `${m.mc.length} de opción múltiple · ${m.ab.length} abiertas`;
+    return `<button class="materia" type="button" id="mat-${k}" data-k="${k}" aria-pressed="${k === estado.materia}"><strong>${esc(m.nombre)}</strong><span class="meta">${esc(m.sub)}</span><span class="meta">${esc(meta)}</span></button>`;
+  }).join("");
+  nav.querySelectorAll(".materia").forEach(b => b.addEventListener("click", () => {
+    if (estado.fase === "rindiendo" && estado.materia !== b.dataset.k) {
+      estado.confirmando = b.dataset.k; renderHoja(); return;
+    }
+    if (estado.fase !== "rindiendo") { estado.materia = b.dataset.k; estado.fase = "inicio"; estado.examen = null; renderTodo(); }
+  }));
+}
+
+function tablaEscala(puntos){
+  const fila1 = ESCALA.map(([a,b]) => `<td class="${puntos != null && puntos >= a && puntos <= b ? "on" : ""}">${a}–${b}</td>`).join("");
+  const fila2 = ESCALA.map(([a,b,n]) => `<td class="${puntos != null && puntos >= a && puntos <= b ? "on" : ""}">${n}</td>`).join("");
+  return `<div class="escala"><table aria-label="Escala de puntaje a nota"><tr><th>Puntaje</th>${fila1}</tr><tr><th>Nota</th>${fila2}</tr></table></div>`;
+}
+
+function renderInicio(){
+  const m = BANCO[estado.materia], h = (leer()[estado.materia] || []);
+  return `
+    <div class="cab"><div><div class="eyebrow">${esc(m.sub)}</div><h2>${esc(m.nombre)}</h2></div>
+      <span class="pill">${MINUTOS} min · ${N_MC + N_AB} preguntas</span></div>
+    <ol class="reglas">
+      <li>Parte A: ${N_MC} preguntas de opción múltiple, ${PTS_MC} puntos cada una. Se corrigen solas.</li>
+      <li>Parte B: ${N_AB} preguntas para desarrollar, ${PTS_AB} puntos cada una. Al entregar ves la respuesta modelo y te ponés el puntaje.</li>
+      <li>Para aprobar hacen falta 60 puntos (nota 4). Cada simulacro sortea preguntas distintas del banco de la materia.</li>
+    </ol>
+    ${tablaEscala(null)}
+    <div class="acciones"><button class="btn" type="button" id="empezar">Empezar simulacro</button>
+      <span class="aviso">Sin apuntes ni celular, como en el examen.</span></div>
+    ${h.length ? `<div class="historial" aria-label="Simulacros anteriores">${h.slice(0,6).map(x => `<span class="pill ${x.puntos >= 60 ? "ok" : "mal"}">${x.fecha} · ${x.puntos} pts · ${x.nota === "Desaprobado" ? "desap." : "nota " + x.nota}</span>`).join("")}</div>` : `<p class="aviso">Todavía no rendiste ningún simulacro de esta materia.</p>`}`;
+}
+
+function empezar(){
+  const m = BANCO[estado.materia];
+  estado.examen = {
+    mc: mezclar(m.mc).slice(0, N_MC).map(p => { const orden = mezclar([0,1,2,3]); return { ...p, orden, resp: null }; }),
+    ab: mezclar(m.ab).slice(0, N_AB).map(p => ({ ...p, texto: "", auto: null }))
+  };
+  estado.fase = "rindiendo"; estado.fin = Date.now() + MINUTOS * 60000; estado.confirmando = false;
+  clearInterval(estado.timer); estado.timer = setInterval(tic, 1000);
+  renderTodo(); window.scrollTo({ top: 0 });
+}
+
+function tic(){
+  const el = document.getElementById("reloj"); if (!el) return;
+  const s = Math.max(0, Math.round((estado.fin - Date.now()) / 1000));
+  el.textContent = `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+  el.classList.toggle("poco", s <= 600);
+  if (s === 0) entregar();
+}
+
+function renderExamen(){
+  const ex = estado.examen, corr = estado.fase !== "rindiendo";
+  const contestadas = ex.mc.filter(p => p.resp !== null).length + ex.ab.filter(p => p.texto.trim()).length;
+  const partA = ex.mc.map((p, i) => {
+    const opciones = p.orden.map(j => {
+      let cls = "";
+      if (corr) { if (j === p.a) cls = "bien"; else if (p.resp === j) cls = "marcada-mal"; }
+      return `<label class="${cls}"><input type="radio" name="mc${i}" id="mc${i}-${j}" value="${j}" ${p.resp === j ? "checked" : ""} ${corr ? "disabled" : ""}><span>${esc(p.o[j])}</span></label>`;
+    }).join("");
+    const expl = corr ? `<div class="expl ${p.resp === p.a ? "ok" : "mal"}"><b>${p.resp === p.a ? "Bien." : p.resp === null ? "Sin responder." : "Incorrecta."}</b> ${esc(p.e)}</div>` : "";
+    return `<div class="preg"><div class="enun"><span class="num">${i + 1}.</span><p>${esc(p.q)}</p><span class="pts">${PTS_MC} pts</span></div><div class="opc">${opciones}</div>${expl}</div>`;
+  }).join("");
+  const partB = ex.ab.map((p, i) => {
+    const n = N_MC + i + 1;
+    const modelo = corr ? `<div class="modelo"><span class="eyebrow">Respuesta modelo</span><ul>${p.r.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+      <div class="autoeval" role="group" aria-label="Tu puntaje en la pregunta ${n}"><span class="aviso">Tu respuesta:</span>
+        ${[["1","Completa · 8"],["0.5","A medias · 4"],["0","Mal o vacía · 0"]].map(([v, t]) => `<button type="button" data-ab="${i}" data-v="${v}" aria-pressed="${p.auto === Number(v)}">${t}</button>`).join("")}</div>` : "";
+    return `<div class="preg"><div class="enun"><span class="num">${n}.</span><p>${esc(p.q)}</p><span class="pts">${PTS_AB} pts</span></div>
+      <div class="abierta"><textarea id="ab${i}" data-ab="${i}" ${corr ? "readonly" : ""} placeholder="Escribí tu respuesta como en el examen…">${esc(p.texto)}</textarea>${modelo}</div></div>`;
+  }).join("");
+  const barra = estado.fase === "rindiendo"
+    ? `<div class="barra"><span class="reloj" id="reloj">--:--</span><span class="aviso" id="progreso">${contestadas}/${N_MC + N_AB} respondidas</span><button class="btn" type="button" id="entregar">Entregar</button></div>
+       ${estado.confirmando ? `<div class="confirm"><span>${estado.confirmando === "entregar" ? `Te quedan ${N_MC + N_AB - contestadas} sin responder. ¿Entregás igual?` : "Si cambiás de materia se pierde este simulacro."}</span><button class="btn" type="button" id="si">${estado.confirmando === "entregar" ? "Entregar igual" : "Cambiar de materia"}</button><button class="btn sec" type="button" id="no">Seguir rindiendo</button></div>` : ""}`
+    : "";
+  return `${barra}${estado.fase !== "rindiendo" ? renderResultado() : ""}
+    <section class="parte"><h3>Parte A — Opción múltiple (cada número vale ${PTS_MC} puntos)</h3>${partA}</section>
+    <section class="parte"><h3>Parte B — Conceptual (cada número vale ${PTS_AB} puntos)</h3>${partB}</section>
+    ${estado.fase !== "rindiendo" ? `<div class="acciones"><button class="btn" type="button" id="otro">Otro simulacro de ${esc(BANCO[estado.materia].nombre)}</button></div>` : ""}`;
+}
+
+function puntaje(){
+  const ex = estado.examen;
+  const a = ex.mc.filter(p => p.resp === p.a).length * PTS_MC;
+  const pend = ex.ab.filter(p => p.auto === null).length;
+  const b = ex.ab.reduce((s, p) => s + (p.auto || 0) * PTS_AB, 0);
+  return { a, b, total: a + b, pend };
+}
+
+function renderResultado(){
+  const { a, b, total, pend } = puntaje(), n = nota(total);
+  return `<div class="resultado">
+    <div class="nota ${pend ? "" : total >= 60 ? "ok" : "mal"}">${pend ? "—" : n === "Desaprobado" ? "D" : n}</div>
+    <div class="det"><strong>${pend ? `Faltan ${pend} abiertas por corregir` : n === "Desaprobado" ? "Desaprobado" : "Aprobado, nota " + n}</strong>
+      <span class="aviso">Parte A: ${a}/${N_MC * PTS_MC} · Parte B: ${b}/${N_AB * PTS_AB}${pend ? " (parcial)" : ""} · Total: ${total}/100</span>
+      <span class="aviso">${pend ? "Bajá a la Parte B y compará cada respuesta con la modelo." : "Repasá las que tienen la explicación en rojo."}</span></div>
+  </div>${tablaEscala(pend ? null : total)}`;
+}
+
+function entregar(){
+  clearInterval(estado.timer); estado.fase = "corrigiendo"; estado.confirmando = false;
+  renderTodo(); window.scrollTo({ top: 0 });
+}
+
+function quizaGuardar(){
+  const { total, pend } = puntaje();
+  if (pend || estado.fase !== "corrigiendo") return;
+  estado.fase = "corregido";
+  const h = leer(), d = new Date();
+  (h[estado.materia] = h[estado.materia] || []).unshift({ fecha: `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`, puntos: total, nota: nota(total) });
+  h[estado.materia] = h[estado.materia].slice(0, 20); guardar(h);
+}
+
+function renderHoja(){
+  const hoja = document.getElementById("hoja");
+  hoja.innerHTML = estado.fase === "inicio" ? renderInicio() : renderExamen();
+  const q = id => document.getElementById(id);
+  if (q("empezar")) q("empezar").onclick = empezar;
+  if (q("otro")) q("otro").onclick = empezar;
+  if (q("entregar")) q("entregar").onclick = () => {
+    const ex = estado.examen, falta = ex.mc.some(p => p.resp === null) || ex.ab.some(p => !p.texto.trim());
+    if (falta) { estado.confirmando = "entregar"; renderHoja(); } else entregar();
+  };
+  if (q("si")) q("si").onclick = () => {
+    if (estado.confirmando === "entregar") entregar();
+    else { clearInterval(estado.timer); estado.materia = estado.confirmando; estado.fase = "inicio"; estado.examen = null; estado.confirmando = false; renderTodo(); }
+  };
+  if (q("no")) q("no").onclick = () => { estado.confirmando = false; renderHoja(); };
+  hoja.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener("change", () => {
+    estado.examen.mc[Number(r.name.slice(2))].resp = Number(r.value); progreso();
+  }));
+  hoja.querySelectorAll("textarea[data-ab]").forEach(t => t.addEventListener("input", () => {
+    estado.examen.ab[Number(t.dataset.ab)].texto = t.value; progreso();
+  }));
+  hoja.querySelectorAll(".autoeval button").forEach(b => b.addEventListener("click", () => {
+    const y = window.scrollY;
+    estado.examen.ab[Number(b.dataset.ab)].auto = Number(b.dataset.v);
+    quizaGuardar(); renderTodo(); window.scrollTo({ top: y });
+  }));
+  tic();
+}
+
+function progreso(){
+  const el = document.getElementById("progreso"); if (!el) return;
+  const ex = estado.examen;
+  el.textContent = `${ex.mc.filter(p => p.resp !== null).length + ex.ab.filter(p => p.texto.trim()).length}/${N_MC + N_AB} respondidas`;
+}
+
+function renderTodo(){ renderMaterias(); renderHoja(); }
+renderTodo();
+</script>
+</body>
+</html>
