@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": 2,
  "actualizado": "2026-10-27",
  "materias": {
   "p3": {
@@ -18,7 +18,8 @@
      ],
      "a": 0,
      "e": "T(n) = T(n/2) + O(1): división con a = 1, b = 2, k = 0. Como a = b^k, queda Θ(n^0 · log n) = Θ(log n).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-mc-002",
@@ -31,7 +32,8 @@
      ],
      "a": 0,
      "e": "Sustracción con a = 2, b = 1, k = 0. Como a > 1, la complejidad es Θ(a^(n/b)) = Θ(2ⁿ).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-003",
@@ -44,7 +46,8 @@
      ],
      "a": 0,
      "e": "División con a = 2, b = 2, k = 1. b^k = 2 = a, entonces Θ(n^k · log n) = Θ(n log n). Es el caso de Merge Sort.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-004",
@@ -57,7 +60,8 @@
      ],
      "a": 0,
      "e": "b^k = 2⁰ = 1 y a = 3 > 1, así que corresponde Θ(n^(log_b a)) = Θ(n^(log₂ 3)).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-005",
@@ -70,7 +74,8 @@
      ],
      "a": 0,
      "e": "Sustracción con a = 1: la regla da Θ(n^(k+1)) = Θ(n).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-006",
@@ -83,7 +88,8 @@
      ],
      "a": 0,
      "e": "Formalmente T₁(n) ≤ c · T₂(n) para n ≥ n₀. Por eso la complejidad no depende del hardware ni del lenguaje.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-007",
@@ -96,7 +102,8 @@
      ],
      "a": 0,
      "e": "Es la regla del máximo: T = T(condición) + máx(T(then), T(else)).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-008",
@@ -109,7 +116,8 @@
      ],
      "a": 0,
      "e": "Sin duplicados recorre las n(n−1)/2 comparaciones y nunca corta antes de tiempo: O(n²).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-mc-009",
@@ -122,7 +130,8 @@
      ],
      "a": 0,
      "e": "Con un pivote extremo las particiones quedan desbalanceadas (n − 1 y 0). En promedio es O(n log n).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-mc-010",
@@ -135,7 +144,8 @@
      ],
      "a": 0,
      "e": "Los dos tienen dos ciclos anidados que dependen de n.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-mc-011",
@@ -148,7 +158,8 @@
      ],
      "a": 0,
      "e": "T(n) = T(n/2) + Θ(n): a = 1, b = 2, k = 1. Como a < b^k, da Θ(n). La verificación final también es O(n).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-mc-012",
@@ -161,7 +172,8 @@
      ],
      "a": 0,
      "e": "Greedy es miope: toma la de 4 y no reconsidera. El sistema no es canónico, así que corresponde programación dinámica.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Greedy"
     },
     {
      "id": "p3-mc-013",
@@ -174,7 +186,8 @@
      ],
      "a": 0,
      "e": "Es la regla del doble o de dominancia (Mₖ ≥ 2·Mₖ₋₁). Es suficiente pero no necesaria: un sistema que no la cumple puede igual ser canónico.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Greedy"
     },
     {
      "id": "p3-mc-014",
@@ -187,7 +200,8 @@
      ],
      "a": 0,
      "e": "Cada unidad de capacidad aporta el máximo valor. Por valor o por peso hay contraejemplos (por ejemplo, P = 10 con A (10, 100), B (5, 90) y C (5, 90)).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Greedy"
     },
     {
      "id": "p3-mc-015",
@@ -200,7 +214,8 @@
      ],
      "a": 0,
      "e": "Como no se puede fraccionar, greedy puede desperdiciar capacidad. Programación dinámica es Θ(n × P), que es seudopolinomial.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-mc-016",
@@ -213,7 +228,8 @@
      ],
      "a": 0,
      "e": "Dijkstra fija en cada paso el vértice más cercano, y eso solo es válido si ningún camino posterior puede bajar la distancia.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-mc-017",
@@ -226,7 +242,8 @@
      ],
      "a": 0,
      "e": "Con matriz de adyacencia es O(V²). Con heap, O((V + E) log V).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-mc-018",
@@ -239,7 +256,8 @@
      ],
      "a": 0,
      "e": "Si los dos extremos ya están en el mismo componente, la arista forma un ciclo y se descarta.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-mc-019",
@@ -252,7 +270,8 @@
      ],
      "a": 0,
      "e": "Prim con matriz es O(n²) y no necesita ordenar todas las aristas. Kruskal, O(a log a), conviene con pocas aristas.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-mc-020",
@@ -265,7 +284,8 @@
      ],
      "a": 0,
      "e": "Es un árbol: conecta todos los vértices sin ciclos.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-mc-021",
@@ -278,7 +298,8 @@
      ],
      "a": 0,
      "e": "Cada F(i) se calcula una sola vez y se guarda. Por divide y conquista es O(2ⁿ) porque recalcula.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-mc-022",
@@ -291,7 +312,8 @@
      ],
      "a": 0,
      "e": "Mₖ[i][j] = mín(Mₖ₋₁[i][j], Mₖ₋₁[i][k] + Mₖ₋₁[k][j]) para cada k: tres ciclos anidados.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-mc-023",
@@ -304,7 +326,8 @@
      ],
      "a": 0,
      "e": "Es una tabla de n filas por v + 1 columnas. Siempre da el óptimo, pero es más lenta que greedy, O(k log k).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-mc-024",
@@ -317,7 +340,8 @@
      ],
      "a": 0,
      "e": "Construye la solución paso a paso, poda las ramas que no son prometedoras y retrocede cuando no puede completarla.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Backtracking"
     },
     {
      "id": "p3-mc-025",
@@ -330,7 +354,8 @@
      ],
      "a": 0,
      "e": "α es lo que MAX ya tiene asegurado y β lo que MIN le deja como máximo. Si β ≤ α, el resto de los hijos no cambia la decisión.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Juegos y poda alfa-beta"
     },
     {
      "id": "p3-mc-026",
@@ -343,7 +368,8 @@
      ],
      "a": 0,
      "e": "Las posiciones con n mod 4 = 1 son P. Se cede el turno y se responde siempre con 4 − x hasta dejarle 1 al rival.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Juegos y poda alfa-beta"
     },
     {
      "id": "p3-mc-027",
@@ -356,7 +382,8 @@
      ],
      "a": 0,
      "e": "Se logra evaluando primero las mejores jugadas. En el peor caso es igual a Min-Max, O(b^d).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Juegos y poda alfa-beta"
     },
     {
      "id": "p3-mc-028",
@@ -369,7 +396,8 @@
      ],
      "a": 0,
      "e": "T(n) = T(n/2) + O(n) da O(n): se pierde toda la ventaja, además del gasto de memoria.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     }
    ],
    "ab": [
@@ -382,7 +410,8 @@
       "Sustracción: a < 1 → Θ(n^k); a = 1 → Θ(n^(k+1)); a > 1 → Θ(a^(n/b)).",
       "División: a < b^k → Θ(n^k); a = b^k → Θ(n^k log n); a > b^k → Θ(n^(log_b a))."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Eficiencia y recursividad"
     },
     {
      "id": "p3-ab-002",
@@ -392,7 +421,8 @@
       "Por sustracción, a = 2 > 1, así que es exponencial.",
       "Programación dinámica guarda cada F(i) en una tabla y la arma de abajo hacia arriba: F(i) = F(i−1) + F(i−2), una sola vez cada uno → O(n)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-ab-003",
@@ -403,7 +433,8 @@
       "Es miope: una buena decisión local puede impedir el óptimo global.",
       "Ejemplo: monedas [4, 3, 1] con v = 6. Greedy da 4 + 1 + 1 y el óptimo es 3 + 3. También el sistema imperial: 48 p = 30 + 12 + 6 en lugar de 24 + 24."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Greedy"
     },
     {
      "id": "p3-ab-004",
@@ -413,7 +444,8 @@
       "En la mochila 0/1 puede fallar. Ejemplo: P = 10, A (7, 70), B (5, 45), C (5, 45). Greedy toma A (70) y desperdicia 3; el óptimo es B + C = 90.",
       "Para la 0/1 se usa programación dinámica: V[i][j] = máx(V[i−1][j], V[i−1][j − pᵢ] + vᵢ), en O(n × P)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Greedy"
     },
     {
      "id": "p3-ab-005",
@@ -423,7 +455,8 @@
       "C[i][j] = mín(C[i−1][j], 1 + C[i][j − dᵢ]): no usar la moneda i, o usar una más (se queda en la fila porque las monedas son ilimitadas). La respuesta está en C[n][v].",
       "Es O(n × v), mayor que greedy, O(k log k). No es más rápida, pero siempre da el óptimo, con cualquier sistema de monedas."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Programación dinámica"
     },
     {
      "id": "p3-ab-006",
@@ -434,7 +467,8 @@
       "Prim: local; crece desde un vértice tomando la arista más barata que sale del árbol. Es O(n²) con matriz y conviene en grafos densos.",
       "Los dos dan el óptimo. Con pesos empatados pueden dar árboles distintos con el mismo costo."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-ab-007",
@@ -444,7 +478,8 @@
       "Después relaja a sus adyacentes: si pasar por él mejora la distancia, la actualiza y guarda el predecesor.",
       "Requiere pesos no negativos. Es O(V²) con matriz u O((V + E) log V) con heap."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Grafos"
     },
     {
      "id": "p3-ab-008",
@@ -454,7 +489,8 @@
       "T(n) = T(n/2) + c → Θ(log n). Con 10⁶ elementos hace como máximo ⌊log₂ n⌋ + 1 = 20 comparaciones.",
       "Si no está ordenado compila y no tira excepción, pero puede dar un resultado erróneo porque descarta mitades que podrían contener el elemento."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-ab-009",
@@ -464,7 +500,8 @@
       "Quick Sort: elige un pivote, particiona en menores y mayores y ordena cada parte. O(n log n) en promedio y O(n²) en el peor caso (pivote extremo).",
       "Sí, son recursivos: se llaman a sí mismos sobre subproblemas más chicos hasta el caso base de 0 o 1 elemento."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Divide y conquista"
     },
     {
      "id": "p3-ab-010",
@@ -474,7 +511,8 @@
       "Alfa-beta: α es lo que MAX ya tiene asegurado (arranca en −∞) y β lo que MIN le deja (arranca en +∞). Si β ≤ α, se podan los hijos restantes.",
       "No cambia la decisión, solo evita trabajo. En el mejor caso (las mejores jugadas primero) es O(b^(d/2))."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Juegos y poda alfa-beta"
     }
    ]
   },
@@ -494,7 +532,8 @@
      ],
      "a": 0,
      "e": "Es un equipo chico, sin jerarquías internas. Los stakeholders participan, pero no forman parte del Scrum Team.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-002",
@@ -507,7 +546,8 @@
      ],
      "a": 0,
      "e": "El PO representa al negocio y maximiza el valor del producto.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-003",
@@ -520,7 +560,8 @@
      ],
      "a": 0,
      "e": "Usa un tablero con columnas por etapa y tarjetas que avanzan, con mejora continua.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-004",
@@ -533,7 +574,8 @@
      ],
      "a": 0,
      "e": "Los cinco son comunicación, simplicidad, retroalimentación, valentía y respeto.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-005",
@@ -546,7 +588,8 @@
      ],
      "a": 0,
      "e": "Los no funcionales describen el cómo: rendimiento, seguridad, fiabilidad. Los otros tres describen qué hace el sistema.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-006",
@@ -559,7 +602,8 @@
      ],
      "a": 0,
      "e": "Los otros dos problemas típicos son la falta de claridad y la confusión de requerimientos.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-007",
@@ -572,7 +616,8 @@
      ],
      "a": 0,
      "e": "Incluye la descripción general, requisitos funcionales y no funcionales, interfaces, restricciones, rendimiento y seguridad.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-008",
@@ -585,7 +630,8 @@
      ],
      "a": 0,
      "e": "Las unitarias las hacen los desarrolladores. Las de aceptación (UAT), el usuario en su entorno.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-009",
@@ -598,7 +644,8 @@
      ],
      "a": 0,
      "e": "Se corre después de cada cambio, o de liberar, para detectar efectos colaterales.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-010",
@@ -611,7 +658,8 @@
      ],
      "a": 0,
      "e": "La de carga usa datos representativos para ver cuándo se degrada; la de estrés lleva al sistema más allá de lo razonable.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-011",
@@ -624,7 +672,8 @@
      ],
      "a": 0,
      "e": "Prueban sentencias, ramas, condiciones y bucles. Las de caja negra no conocen el código.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-012",
@@ -637,7 +686,8 @@
      ],
      "a": 0,
      "e": "Sirve para saber si vale la pena seguir probando la versión.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-mc-013",
@@ -650,7 +700,8 @@
      ],
      "a": 0,
      "e": "Los scripts son más fáciles de escribir y leer, pero más lentos porque se interpretan.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-014",
@@ -663,7 +714,8 @@
      ],
      "a": 0,
      "e": "Se conecta a los repositorios (públicos o privados) para bajar los paquetes.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-015",
@@ -676,7 +728,8 @@
      ],
      "a": 0,
      "e": "Los típicos son desarrollo (local), testing (QA), staging y producción.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-016",
@@ -689,7 +742,8 @@
      ],
      "a": 0,
      "e": "Busca que el código esté siempre listo para desplegar, con incrementos chicos y pruebas automatizadas.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-017",
@@ -702,7 +756,8 @@
      ],
      "a": 0,
      "e": "El orden es CI → pruebas automatizadas → despliegue automatizado → monitoreo y feedback.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-018",
@@ -715,7 +770,8 @@
      ],
      "a": 0,
      "e": "Sus funciones son distribución de carga, tolerancia a fallos (failover), sesiones persistentes y monitoreo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-019",
@@ -728,7 +784,8 @@
      ],
      "a": 0,
      "e": "Otros ejemplos son NGINX y F5, este último para empresas grandes.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-mc-020",
@@ -741,7 +798,8 @@
      ],
      "a": 0,
      "e": "Los riesgos son confidencialidad y privacidad, pérdida de personal especializado y lock-in. Las otras opciones son beneficios.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Tercerización y SLA"
     },
     {
      "id": "is-mc-021",
@@ -754,7 +812,8 @@
      ],
      "a": 0,
      "e": "Las métricas típicas son disponibilidad, tasa de errores, tiempo de respuesta y de resolución, y satisfacción.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Tercerización y SLA"
     },
     {
      "id": "is-mc-022",
@@ -767,7 +826,8 @@
      ],
      "a": 0,
      "e": "El multinivel combina el nivel corporativo, el de cliente y el de servicio.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Tercerización y SLA"
     },
     {
      "id": "is-mc-023",
@@ -780,7 +840,8 @@
      ],
      "a": 0,
      "e": "Los 5 componentes son alineación estratégica, entrega de valor, gestión de riesgos, gestión de recursos y medición del desempeño.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-mc-024",
@@ -793,7 +854,8 @@
      ],
      "a": 0,
      "e": "Hoy abarca toda la gobernanza, con foco en la gestión de riesgos. ISO/IEC 38500 es la norma de gobierno corporativo de TI.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-mc-025",
@@ -806,7 +868,8 @@
      ],
      "a": 0,
      "e": "Del 1 al 5: crisis, corrección de fallas, atenuación, prevención y eliminación de la causa raíz. Quedarse en 1 a 3 es perder la batalla.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-mc-026",
@@ -819,7 +882,8 @@
      ],
      "a": 0,
      "e": "Con eso se ordenan y priorizan los riesgos, por ejemplo en una matriz de riesgo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-mc-027",
@@ -832,7 +896,8 @@
      ],
      "a": 0,
      "e": "Atraso y personal son riesgos del proyecto; la tecnología obsoleta es un riesgo del producto (técnico).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-mc-028",
@@ -845,7 +910,8 @@
      ],
      "a": 0,
      "e": "Pasos: entender la organización → evaluar riesgos → planificar según prioridad → ejecutar → informar → seguimiento. Se relaciona con ISO 37301.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     }
    ],
    "ab": [
@@ -859,7 +925,8 @@
       "Pruebas: verificar y validar que cumpla los requisitos.",
       "Mantenimiento: corregir errores y adaptar a nuevos requisitos (es continuo)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-ab-002",
@@ -869,7 +936,8 @@
       "No funcionales: cómo lo hace, en términos de calidad y restricciones (rendimiento, fiabilidad, seguridad, usabilidad). Ejemplo: \"la página carga en menos de 2 s\".",
       "Los funcionales se validan con pruebas funcionales; los no funcionales, con pruebas de desempeño, seguridad, etc."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-ab-003",
@@ -879,7 +947,8 @@
       "Artefactos: Product Backlog (lista priorizada de todo el producto), Sprint Backlog (ítems elegidos para el sprint y su plan) e Incremento (producto terminado al final del sprint).",
       "Ceremonias: planning, daily, review y retrospective."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-ab-004",
@@ -889,7 +958,8 @@
       "Kanban: tablero para visualizar el flujo, límite de WIP y mejora continua.",
       "XP: calidad técnica y respuesta al cambio. Valores: comunicación, simplicidad, feedback, valentía y respeto. Prácticas: pair programming, TDD, integración continua e historias de usuario."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1 · Ágiles, requisitos y pruebas"
     },
     {
      "id": "is-ab-005",
@@ -899,7 +969,8 @@
       "Características: separación de configuración y datos, control de versiones, estandarización y consistencia, control de accesos y seguridad, gestión de dependencias, monitoreo y registro.",
       "Entornos: desarrollo (local), testing (QA), staging o preproducción (copia de producción) y producción."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-ab-006",
@@ -909,7 +980,8 @@
       "Fases: integración continua → pruebas automatizadas → despliegue automatizado → monitoreo y retroalimentación (ciclo iterativo).",
       "Principios de la entrega: transparencia y visibilidad, frecuencia y previsibilidad, garantía de calidad y pruebas, retroalimentación y mejora."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 2 · Operaciones y entrega continua"
     },
     {
      "id": "is-ab-007",
@@ -919,7 +991,8 @@
       "Desafíos: comunicación y diferencias culturales, garantía de calidad, seguridad y cumplimiento normativo, integración de equipos y cultura, claridad de requisitos y gestión de expectativas.",
       "Riesgos del BPO: confidencialidad y privacidad, pérdida de personal especializado propio y dependencia del proveedor."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Tercerización y SLA"
     },
     {
      "id": "is-ab-008",
@@ -929,7 +1002,8 @@
       "Incluye: descripción del servicio, exclusiones, objetivos de nivel, seguridad, recuperación ante desastres, seguimiento e informes, sanciones y firmas.",
       "Se monitorea con KPIs: disponibilidad, tiempos de respuesta y resolución, tasa de errores y satisfacción. Tipos: por cliente, por servicio y multinivel."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Tercerización y SLA"
     },
     {
      "id": "is-ab-009",
@@ -940,7 +1014,8 @@
       "Marcos: ISO/IEC 38500 y COBIT (nacido como marco de auditoría, con foco en riesgos).",
       "La gobernanza decide qué y por qué; la gestión decide cómo."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     },
     {
      "id": "is-ab-010",
@@ -950,7 +1025,8 @@
       "Proceso: identificar → analizar (probabilidad, impacto y exposición = P × pérdida, priorizar) → planificar (evitar, mitigar, contingencia) → seguimiento → control.",
       "Categorías: riesgos del proyecto, del producto y del negocio."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Gobernanza de TI y riesgos"
     }
    ]
   },
@@ -970,7 +1046,8 @@
      ],
      "a": 0,
      "e": "La operación es continua y repetitiva; el proyecto es temporal y produce un resultado único.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-002",
@@ -983,7 +1060,8 @@
      ],
      "a": 0,
      "e": "Producto mínimo viable.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-003",
@@ -996,7 +1074,8 @@
      ],
      "a": 0,
      "e": "Los siete dominios son gobernanza, interesados, alcance, recursos, cronograma, riesgos y finanzas.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-004",
@@ -1009,7 +1088,8 @@
      ],
      "a": 0,
      "e": "Los dominios de desempeño se cruzan con estos grupos de procesos.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-005",
@@ -1022,7 +1102,8 @@
      ],
      "a": 0,
      "e": "Los programas se gestionan en conjunto; el portafolio se alinea con la estrategia.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-006",
@@ -1035,7 +1116,8 @@
      ],
      "a": 0,
      "e": "Cambiar uno de los tres afecta a los otros.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-007",
@@ -1048,7 +1130,8 @@
      ],
      "a": 0,
      "e": "En la matricial comparte la autoridad con los gerentes funcionales.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-008",
@@ -1061,7 +1144,8 @@
      ],
      "a": 0,
      "e": "No es un documento vivo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-mc-009",
@@ -1074,7 +1158,8 @@
      ],
      "a": 0,
      "e": "Mucho poder y poco interés: mantener satisfecho. Poco poder y mucho interés: mantener informado. Poco y poco: monitorear.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-mc-010",
@@ -1087,7 +1172,8 @@
      ],
      "a": 0,
      "e": "No hay que aburrirlo, pero nunca ignorarlo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-mc-011",
@@ -1100,7 +1186,8 @@
      ],
      "a": 0,
      "e": "n(n − 1)/2 = 6 × 5 / 2 = 15. Por eso se definen referentes en lugar de que todos hablen con todos.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-mc-012",
@@ -1113,7 +1200,8 @@
      ],
      "a": 0,
      "e": "De ahí la importancia de la escucha activa y de la comunicación no verbal.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-mc-013",
@@ -1126,7 +1214,8 @@
      ],
      "a": 0,
      "e": "Las dos son parte del modelo lineal. El interactivo agrega retroalimentación.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-mc-014",
@@ -1139,7 +1228,8 @@
      ],
      "a": 0,
      "e": "Es la corrupción del alcance. Todo cambio debe evaluarse por su impacto y decidirse (aceptar, reformular o denegar).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-mc-015",
@@ -1152,7 +1242,8 @@
      ],
      "a": 0,
      "e": "El PM es responsable del alcance del proyecto (el trabajo); el del producto son las características y funciones.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-mc-016",
@@ -1165,7 +1256,8 @@
      ],
      "a": 0,
      "e": "La WBS descompone el proyecto en un árbol hasta llegar a los paquetes de trabajo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-mc-017",
@@ -1178,7 +1270,8 @@
      ],
      "a": 0,
      "e": "(O + 4·MP + P) / 6 = (4 + 24 + 14) / 6 = 42 / 6 = 7.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-018",
@@ -1191,7 +1284,8 @@
      ],
      "a": 0,
      "e": "La presupuestaria va de −10 % a +25 % y la definitiva de −5 % a +10 % (AACE).",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-019",
@@ -1204,7 +1298,8 @@
      ],
      "a": 0,
      "e": "La terminación de A determina la terminación de B.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-020",
@@ -1217,7 +1312,8 @@
      ],
      "a": 0,
      "e": "Cualquier atraso en él atrasa el proyecto.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-021",
@@ -1230,7 +1326,8 @@
      ],
      "a": 0,
      "e": "Crashing agrega recursos a tareas críticas y sube el costo. Fast tracking paraleliza tareas y sube el riesgo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-022",
@@ -1243,7 +1340,8 @@
      ],
      "a": 0,
      "e": "Marca un punto importante en el tiempo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-mc-023",
@@ -1256,7 +1354,8 @@
      ],
      "a": 0,
      "e": "Forma parte del presupuesto. La reserva de gestión es de la alta gerencia, cubre imprevistos y queda fuera de la línea base.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-mc-024",
@@ -1269,7 +1368,8 @@
      ],
      "a": 0,
      "e": "No debería influir en la decisión. El de la alternativa descartada es el costo de oportunidad.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-mc-025",
@@ -1282,7 +1382,8 @@
      ],
      "a": 0,
      "e": "En costos reembolsables el riesgo es del comprador; tiempo y materiales está en el medio.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-mc-026",
@@ -1295,7 +1396,8 @@
      ],
      "a": 0,
      "e": "RFI = información del mercado; SOW = alcance detallado; RFP = propuesta técnica con presupuesto.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-mc-027",
@@ -1308,7 +1410,8 @@
      ],
      "a": 0,
      "e": "R realiza, A aprueba, C es consultado e I es informado.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Recursos"
     },
     {
      "id": "dpt-mc-028",
@@ -1321,7 +1424,8 @@
      ],
      "a": 0,
      "e": "Busca que el equipo quiera (motivación), sepa (capacitación) y pueda (recursos) hacer el trabajo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Recursos"
     },
     {
      "id": "dpt-mc-029",
@@ -1334,7 +1438,8 @@
      ],
      "a": 0,
      "e": "Sale de combinar el presupuesto con el cronograma.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-mc-030",
@@ -1347,7 +1452,8 @@
      ],
      "a": 0,
      "e": "CapEx: infraestructura, hardware, servicios para ejecutar el proyecto. OpEx: licencias, mantenimiento, alquileres.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     }
    ],
    "ab": [
@@ -1359,7 +1465,8 @@
       "Operación: continua y repetitiva; mantiene funcionando a la organización.",
       "Ejemplos: desarrollar un sistema es un proyecto; facturar a los clientes es una operación."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-ab-002",
@@ -1369,7 +1476,8 @@
       "Contiene: objetivos, entregables principales, sponsor, responsables, recursos clave, alcance y exclusiones, hitos, presupuesto, supuestos, restricciones y riesgos preliminares.",
       "Es fundacional: una vez aprobado no se modifica; los documentos de planificación posteriores lo refinan."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 1-2 · Fundamentos del proyecto"
     },
     {
      "id": "dpt-ab-003",
@@ -1379,7 +1487,8 @@
       "Involucramiento: niveles desconocedor, opositor, neutral, apoyo y líder. Se marca la posición actual (A) y la deseada (D) de cada interesado y se planifican acciones para acercarlas.",
       "Todo esto se registra en el registro de interesados, que se monitorea porque las posiciones cambian."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-ab-004",
@@ -1390,7 +1499,8 @@
       "Modelo interactivo: agrega retroalimentación para confirmar que se entendió.",
       "Mehrabian: 7 % palabras, 38 % tono, 55 % corporal. El kick-off es el gran hito de comunicación."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 3 · Interesados y comunicaciones"
     },
     {
      "id": "dpt-ab-005",
@@ -1400,7 +1510,8 @@
       "Calidad: corregir tarde un requisito mal definido es carísimo (curva del costo del cambio, regla 1-10-100).",
       "Hay que convertir la necesidad, que suele ser ambigua, en una característica medible asignada a un objeto (por ejemplo, carga del formulario ≤ 1 s)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-ab-006",
@@ -1409,7 +1520,8 @@
       "WBS: descomposición jerárquica en árbol del proyecto hasta los paquetes de trabajo, donde se estiman tareas, recursos, costo y riesgos. Es una herramienta visual y colaborativa.",
       "Enunciado del alcance: descripción, requisitos (verbos), entregables (sustantivos), criterios de aceptación, factores críticos de éxito, supuestos, restricciones y exclusiones."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-ab-007",
@@ -1419,7 +1531,8 @@
       "La decide el sponsor o un comité de cambios: aceptarla, pedir que se reformule o denegarla. Después se actualiza el registro, se informa y se implementa (lógica costo/beneficio).",
       "Scope creep: aceptar cambios sin ajustar cronograma, presupuesto y recursos."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 4 · Alcance"
     },
     {
      "id": "dpt-ab-008",
@@ -1429,7 +1542,8 @@
       "Camino crítico: la cadena más larga con holgura cero. Determina la duración y cualquier atraso ahí atrasa el proyecto.",
       "Crashing: agregar recursos a tareas críticas (sube el costo). Fast tracking: paralelizar tareas en secuencia (sube el riesgo)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 5 · Cronograma"
     },
     {
      "id": "dpt-ab-009",
@@ -1438,7 +1552,8 @@
       "Reserva de contingencia: para riesgos identificados; la gestiona el PM y forma parte del presupuesto. Reserva de gestión: para imprevistos; la maneja la alta gerencia y queda fuera de la línea base.",
       "Precio fijo: alcance claro; el riesgo es del proveedor. Costos reembolsables: mucha incertidumbre; el riesgo es del comprador. Tiempo y materiales: híbrido, para cuando no hay un SOW preciso."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 6 · Finanzas"
     },
     {
      "id": "dpt-ab-010",
@@ -1448,7 +1563,8 @@
       "Liderazgo servicial: elimina obstáculos, protege al equipo y le da autonomía.",
       "Alto rendimiento: comunicación abierta, entendimiento y propiedad compartidos, confianza, colaboración, adaptabilidad, resiliencia, empoderamiento y reconocimiento."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "UVA 7 · Recursos"
     }
    ]
   },
@@ -1468,7 +1584,8 @@
      ],
      "a": 0,
      "e": "Junto con las apps web globales que necesitaban alta disponibilidad y escalar horizontalmente.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "NoSQL y escalabilidad"
     },
     {
      "id": "bd2-mc-002",
@@ -1481,7 +1598,8 @@
      ],
      "a": 0,
      "e": "Escalar verticalmente es potenciar una sola máquina, que tiene límites y es un punto único de falla.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "NoSQL y escalabilidad"
     },
     {
      "id": "bd2-mc-003",
@@ -1494,7 +1612,8 @@
      ],
      "a": 0,
      "e": "Es una confusión muy típica en los exámenes.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-004",
@@ -1507,7 +1626,8 @@
      ],
      "a": 0,
      "e": "Cassandra prioriza disponibilidad, con consistencia eventual y configurable.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-005",
@@ -1520,7 +1640,8 @@
      ],
      "a": 0,
      "e": "La replicación da disponibilidad y el sharding da escalabilidad.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-006",
@@ -1533,7 +1654,8 @@
      ],
      "a": 0,
      "e": "Se evita eligiendo una buena clave de partición.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-007",
@@ -1546,7 +1668,8 @@
      ],
      "a": 0,
      "e": "La asíncrona es más rápida, pero puede perder las últimas escrituras si el principal falla.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-008",
@@ -1559,7 +1682,8 @@
      ],
      "a": 0,
      "e": "Mientras tanto se puede leer un dato desactualizado. Read-your-writes garantiza ver al menos las propias escrituras.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-009",
@@ -1572,7 +1696,8 @@
      ],
      "a": 0,
      "e": "Agrega tipos de datos y se recorre de forma más eficiente.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-010",
@@ -1585,7 +1710,8 @@
      ],
      "a": 0,
      "e": "drop() también elimina los índices de la colección.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-011",
@@ -1598,7 +1724,8 @@
      ],
      "a": 0,
      "e": "Sin comillas, la clave con punto no es un nombre válido en JavaScript.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-012",
@@ -1611,7 +1738,8 @@
      ],
      "a": 0,
      "e": "Después se puede agrupar con $group, por ejemplo $sum: 1 para contar.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-013",
@@ -1624,7 +1752,8 @@
      ],
      "a": 0,
      "e": "Conviene poner $match temprano en el pipeline para procesar menos documentos.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-014",
@@ -1637,7 +1766,8 @@
      ],
      "a": 0,
      "e": "Se define con partialFilterExpression; por ejemplo, solo montos mayores a un millón.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-mc-015",
@@ -1650,7 +1780,8 @@
      ],
      "a": 0,
      "e": "A diferencia del modelo relacional, las relaciones se guardan explícitamente.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Neo4j (grafos)"
     },
     {
      "id": "bd2-mc-016",
@@ -1663,7 +1794,8 @@
      ],
      "a": 0,
      "e": "Ejemplo: MATCH (e:Empresa)-[:USA_CUENTA]->(c)<-[:USA_CUENTA]-(otra) RETURN e, otra.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Neo4j (grafos)"
     },
     {
      "id": "bd2-mc-017",
@@ -1676,7 +1808,8 @@
      ],
      "a": 0,
      "e": "La clave es única.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-mc-018",
@@ -1689,7 +1822,8 @@
      ],
      "a": 0,
      "e": "−1 significa que la clave existe pero no tiene expiración.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-mc-019",
@@ -1702,7 +1836,8 @@
      ],
      "a": 0,
      "e": "Junto con EXPIRE sirve para contar intentos fallidos en una ventana de tiempo.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-mc-020",
@@ -1715,7 +1850,8 @@
      ],
      "a": 0,
      "e": "SADD agrega sin duplicar y SISMEMBER verifica pertenencia.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-mc-021",
@@ -1728,7 +1864,8 @@
      ],
      "a": 0,
      "e": "Se duplica información a propósito para que cada consulta lea una sola partición.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Cassandra"
     },
     {
      "id": "bd2-mc-022",
@@ -1741,7 +1878,8 @@
      ],
      "a": 0,
      "e": "evento_ts y evento_id son claves de clustering: ordenan dentro de la partición. La fecha hace de bucket para que la partición no crezca sin límite.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Cassandra"
     },
     {
      "id": "bd2-mc-023",
@@ -1754,7 +1892,8 @@
      ],
      "a": 0,
      "e": "Conviene crear otra tabla diseñada para esa consulta.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Cassandra"
     },
     {
      "id": "bd2-mc-024",
@@ -1767,7 +1906,8 @@
      ],
      "a": 0,
      "e": "\"Elegir 2 de 3\" es engañoso: la P no es opcional en un sistema distribuido. Lo formalizaron Gilbert y Lynch a partir de la conjetura de Brewer.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-025",
@@ -1780,7 +1920,8 @@
      ],
      "a": 0,
      "e": "Siempre hay al menos un nodo en común entre los que escribieron y los que se leen.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-mc-026",
@@ -1793,7 +1934,8 @@
      ],
      "a": 0,
      "e": "Sirve para que dos usuarios no bloqueen el mismo turno a la vez, combinado con un TTL.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-mc-027",
@@ -1806,7 +1948,8 @@
      ],
      "a": 0,
      "e": "Ejemplo del laboratorio: MongoDB para las reservas confirmadas y Redis para el bloqueo temporal con TTL.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Persistencia políglota"
     },
     {
      "id": "bd2-mc-028",
@@ -1819,7 +1962,8 @@
      ],
      "a": 0,
      "e": "En Cassandra, el estado del cluster se ve con nodetool.",
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     }
    ],
    "ab": [
@@ -1831,7 +1975,8 @@
       "No lo reemplaza, lo complementa: se elige según el problema (persistencia políglota).",
       "Relacional: esquema fijo, joins, consultas ad-hoc, transacciones críticas (bancos, ERP). NoSQL: gran volumen, esquemas cambiantes, alta disponibilidad, escala horizontal."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "NoSQL y escalabilidad"
     },
     {
      "id": "bd2-ab-002",
@@ -1841,7 +1986,8 @@
       "Síncrona: espera la confirmación de las réplicas (consistencia fuerte, más latencia). Asíncrona: solo espera al principal (más rápida, puede perder las últimas escrituras).",
       "Esquemas: primaria-secundaria (con failover) y multi-master (escala escrituras, pero tiene conflictos)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-ab-003",
@@ -1851,7 +1997,8 @@
       "En un sistema distribuido las particiones son inevitables, así que la elección real, cuando ocurre una, es entre C y A.",
       "MongoDB es CP (replica set con un primario). Cassandra es AP, con consistencia configurable por operación (ONE, QUORUM, ALL)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-ab-004",
@@ -1861,7 +2008,8 @@
       "Embeber (desnormalizar): cuando se lee todo junto y el array está acotado, por ejemplo un proceso con sus eventos.",
       "Separar (un documento por evento): cuando el análisis es transversal (por usuario, área o fecha) o el array crecería sin límite."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-ab-005",
@@ -1872,7 +2020,8 @@
       "$group: { _id: \"$eventos.tipo\", total: { $sum: 1 } } agrupa por tipo y cuenta.",
       "$sort y $project para ordenar y elegir qué campos mostrar."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "MongoDB"
     },
     {
      "id": "bd2-ab-006",
@@ -1882,7 +2031,8 @@
       "Cypher es declarativo: se describe el patrón buscado.",
       "Casos: fraude con cuentas compartidas (dos empresas que usan la misma cuenta), colusión entre proveedores, beneficiarios finales ocultos, recomendaciones. Lo que interesa conectar se modela como nodo (cuentas, domicilios)."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Neo4j (grafos)"
     },
     {
      "id": "bd2-ab-007",
@@ -1892,7 +2042,8 @@
       "Con EXPIRE intentos:<usuario> <segundos>: la ventana se borra sola. TTL devuelve −1 si no tiene expiración y −2 si la clave no existe.",
       "Si el contador supera el umbral, se bloquea. Redis sirve por ser clave-valor en memoria: acceso directo y muy rápido."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Redis"
     },
     {
      "id": "bd2-ab-008",
@@ -1902,7 +2053,8 @@
       "Ejemplo: PRIMARY KEY ((usuario_id, fecha), evento_ts, evento_id). La fecha hace de bucket diario para que la partición no crezca sin límite.",
       "La regla es primero la consulta y después la tabla. Si hace falta ALLOW FILTERING, falta una tabla para esa consulta."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Cassandra"
     },
     {
      "id": "bd2-ab-009",
@@ -1912,7 +2064,8 @@
       "En turnos, leer una réplica desactualizada podría mostrar libre un turno ya reservado y generar una doble reserva.",
       "Se necesita consistencia fuerte en la lectura para confirmar, o un bloqueo previo."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Distribución: CAP, replicación y sharding"
     },
     {
      "id": "bd2-ab-010",
@@ -1922,7 +2075,8 @@
       "MongoDB guarda lo persistente: las reservas confirmadas y su historial. Conviene el borrado lógico (estado \"cancelado\") para mantener la trazabilidad.",
       "Redis bloquea temporalmente el turno mientras se confirma: set con nx=True (solo si no existe) y TTL para que se libere solo."
      ],
-     "fuente": "inicial"
+     "fuente": "inicial",
+     "tema": "Persistencia políglota"
     }
    ]
   }

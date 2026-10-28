@@ -6,6 +6,7 @@ Uso: python3 scripts/agregar.py nuevas.json [--fecha AAAA-MM-DD]
 nuevas.json es una lista de bloques:
   [{"materia": "Programación III",            # nombre del campus o clave (p3, is, dpt, bd2)
     "fuente": "UVA 8 — Ramificación y poda",  # apunte del que salen
+    "tema": "UVA 8 · Ramificación y poda",    # opcional: unidad para las estadísticas (si falta, sale de "fuente")
     "mc": [{"q": "...", "o": ["correcta", "inc1", "inc2", "inc3"], "a": 0, "e": "explicación"}],
     "ab": [{"q": "...", "r": ["punto 1", "punto 2"]}]}]
 
@@ -61,7 +62,8 @@ def main():
                     if not r: errores.append(f"{clave}: abierta sin respuesta modelo: {q[:60]}"); continue
                     item = {"q": q, "r": r}
                 n = len(m[tipo]) + 1
-                item = {"id": f"{clave}-{tipo}-{n:03d}", **item, "fuente": bloque.get("fuente", ""), "agregada": fecha}
+                tema = (p.get("tema") or bloque.get("tema") or bloque.get("fuente", "") or "Otros").replace(" — ", " · ")
+                item = {"id": f"{clave}-{tipo}-{n:03d}", **item, "fuente": bloque.get("fuente", ""), "tema": tema, "agregada": fecha}
                 m[tipo].append(item); vistos.add(norm(q)); agregadas += 1
     if errores:
         print("NO SE GUARDÓ NADA. Errores:\n- " + "\n- ".join(errores)); sys.exit(1)

@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Simulacros UADE 2C 2026</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2346A8">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Simulacros">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,6 +99,19 @@ textarea{width:100%;min-height:120px;resize:vertical;padding:10px 12px;border:1p
 .resultado .det{display:flex;flex-direction:column;gap:4px;min-width:0}
 .aviso{font-size:.88rem;color:var(--muted)}
 .confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--pen);border-radius:8px;background:var(--pen-soft)}
+.modos{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.temas{display:flex;flex-direction:column;gap:8px}
+.tema{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.tema .nom{font-weight:500;min-width:0}
+.tema .dato{font:400 .78rem/1.2 var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums;grid-column:1}
+.tema .bar{grid-column:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.tema .bar i{display:block;height:100%;background:var(--ok)}
+.tema .bar i.medio{background:var(--half)} .tema .bar i.bajo{background:var(--pen)}
+.tema .btn{grid-column:2;grid-row:1 / span 3;padding:6px 14px;font-size:.85rem}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 .74rem/1.2 var(--f-mono);border-radius:999px;padding:3px 10px;background:var(--ink-soft);color:var(--ink)}
+.chip.off{background:var(--half-soft);color:var(--half)}
+.instalar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px}
+.instalar:not(:has(:not([hidden]))){display:none}
 @media (prefers-reduced-motion: no-preference){.preg,.modelo{animation:aparece .25s ease-out both}@keyframes aparece{from{transform:translateY(4px)}to{transform:none}}}
 </style>
 </head>
@@ -101,8 +121,9 @@ textarea{width:100%;min-height:120px;resize:vertical;padding:10px 12px;border:1p
   <header>
     <div class="eyebrow">UADE · 2.º cuatrimestre 2026 · finales de diciembre</div>
     <h1>Simulacros de examen</h1>
-    <p class="lead">Cada simulacro sortea 15 preguntas de opción múltiple que se corrigen solas y 5 preguntas para desarrollar, como las de los modelos de parcial. Las abiertas las corregís vos con la respuesta modelo. La nota sale con la misma escala de la hoja de examen.</p>
+    <p class="lead">Cada simulacro sortea 15 preguntas de opción múltiple que se corrigen solas y 5 preguntas para desarrollar, como las de los modelos de parcial. Las abiertas las corregís vos con la respuesta modelo. La nota sale con la misma escala de la hoja de examen. Lo que fallás vuelve a salir más seguido, y funciona sin conexión una vez abierta.</p>
     <p class="eyebrow" id="banco-info"></p>
+    <div class="instalar"><span class="chip" id="red" hidden></span><button class="btn sec" type="button" id="instalar" hidden>Instalar en el celular</button><span class="aviso" id="instalar-ios" hidden>En iPhone: tocá Compartir y después «Agregar a inicio» para usarlo sin conexión.</span></div>
   </header>
 
   <nav class="materias" id="materias" aria-label="Materia"></nav>
@@ -115,15 +136,49 @@ let BANCO = {}, ACTUALIZADO = "";
 
 const ESCALA = [[0,59,"Desaprobado"],[60,64,"4"],[65,69,"5"],[70,74,"6"],[75,79,"7"],[80,87,"8"],[88,94,"9"],[95,100,"10"]];
 const N_MC = 15, N_AB = 5, PTS_MC = 4, PTS_AB = 8, MINUTOS = 120;
-const LS = "simulacros-uade-v1";
+const LS = "simulacros-uade-v1";            // historial de notas por materia
+const LS_ST = "simulacros-uade-stats-v1";   // resultado de cada pregunta: { id: { n, ok, ult, f } }
 
-let estado = { materia: "", fase: "inicio", examen: null, fin: 0, timer: null, confirmando: false };
+let estado = { materia: "", fase: "inicio", modo: "completo", tema: "", examen: null, fin: 0, timer: null, confirmando: false };
 
 function leer(){ try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch(e){ return {}; } }
 function guardar(d){ try { localStorage.setItem(LS, JSON.stringify(d)); } catch(e){} }
+function leerSt(){ try { return JSON.parse(localStorage.getItem(LS_ST) || "{}"); } catch(e){ return {}; } }
+function guardarSt(d){ try { localStorage.setItem(LS_ST, JSON.stringify(d)); } catch(e){} }
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 function mezclar(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function nota(p){ const f = ESCALA.find(([a,b]) => p >= a && p <= b); return f ? f[2] : "Desaprobado"; }
+function hoy(){ const d = new Date(); return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`; }
+
+// Peso de cada pregunta al sortear: las falladas salen mucho más seguido, las nunca vistas un poco más que las acertadas.
+function peso(p, st){
+  const s = st[p.id];
+  if (!s) return 1.5;
+  return 1 + 3 * (1 - s.ok / s.n) + (s.ult < 1 ? 2 : 0);
+}
+function sorteo(lista, n, st){
+  const pool = lista.map(p => ({ p, w: peso(p, st) })), out = [];
+  while (out.length < n && pool.length){
+    let r = Math.random() * pool.reduce((s, x) => s + x.w, 0), i = 0;
+    while (i < pool.length - 1 && (r -= pool[i].w) > 0) i++;
+    out.push(pool.splice(i, 1)[0].p);
+  }
+  return mezclar(out);
+}
+function fallada(p, st){ const s = st[p.id]; return s && s.ult < 1; }
+
+function temasDe(m){
+  const st = leerSt(), t = {};
+  [...m.mc, ...m.ab].forEach(p => {
+    const k = p.tema || "Otros";
+    const x = t[k] = t[k] || { tema: k, total: 0, vistas: 0, n: 0, ok: 0, falladas: 0 };
+    x.total++;
+    const s = st[p.id];
+    if (s){ x.vistas++; x.n += s.n; x.ok += s.ok; if (s.ult < 1) x.falladas++; }
+  });
+  return Object.values(t).map(x => ({ ...x, pct: x.n ? Math.round(100 * x.ok / x.n) : null }))
+    .sort((a, b) => (a.pct === null) - (b.pct === null) || (a.pct ?? 0) - (b.pct ?? 0) || a.tema.localeCompare(b.tema));
+}
 
 function renderMaterias(){
   const h = leer();
@@ -147,30 +202,51 @@ function tablaEscala(puntos){
   return `<div class="escala"><table aria-label="Escala de puntaje a nota"><tr><th>Puntaje</th>${fila1}</tr><tr><th>Nota</th>${fila2}</tr></table></div>`;
 }
 
+function renderTemas(m){
+  const ts = temasDe(m);
+  if (!ts.some(t => t.pct !== null)) return `<p class="aviso">Cuando rindas simulacros, acá vas a ver qué unidades te cuestan más.</p>`;
+  return `<div class="temas">${ts.map((t, i) => {
+    const cls = t.pct === null ? "" : t.pct < 60 ? "bajo" : t.pct < 80 ? "medio" : "";
+    const dato = t.pct === null ? `Sin practicar · ${t.total} ${t.total === 1 ? "pregunta" : "preguntas"}` : `${t.pct}% de aciertos · ${t.vistas}/${t.total} vistas${t.falladas ? ` · ${t.falladas} para repasar` : ""}`;
+    return `<div class="tema"><span class="nom">${esc(t.tema)}</span><span class="dato">${dato}</span><span class="bar" aria-hidden="true"><i class="${cls}" style="width:${t.pct ?? 0}%"></i></span><button class="btn sec" type="button" data-tema="${i}">Practicar</button></div>`;
+  }).join("")}</div>`;
+}
+
 function renderInicio(){
-  const m = BANCO[estado.materia], h = (leer()[estado.materia] || []);
+  const m = BANCO[estado.materia], h = (leer()[estado.materia] || []), st = leerSt();
+  const fallMC = m.mc.filter(p => fallada(p, st)).length, fallAB = m.ab.filter(p => fallada(p, st)).length;
   return `
     <div class="cab"><div><div class="eyebrow">${esc(m.sub)}</div><h2>${esc(m.nombre)}</h2></div>
       <span class="pill">${MINUTOS} min · ${N_MC + N_AB} preguntas</span></div>
     <ol class="reglas">
       <li>Parte A: ${N_MC} preguntas de opción múltiple, ${PTS_MC} puntos cada una. Se corrigen solas.</li>
       <li>Parte B: ${N_AB} preguntas para desarrollar, ${PTS_AB} puntos cada una. Al entregar ves la respuesta modelo y te ponés el puntaje.</li>
-      <li>Para aprobar hacen falta 60 puntos (nota 4). Cada simulacro sortea preguntas distintas del banco de la materia.</li>
+      <li>Para aprobar hacen falta 60 puntos (nota 4). Las preguntas que fallaste salen más seguido en los próximos simulacros.</li>
     </ol>
     ${tablaEscala(null)}
-    <div class="acciones"><button class="btn" type="button" id="empezar">Empezar simulacro</button>
+    <div class="modos"><button class="btn" type="button" id="empezar">Empezar simulacro</button>
+      <button class="btn sec" type="button" id="errores" ${fallMC + fallAB ? "" : "disabled"}>Repasar errores${fallMC + fallAB ? ` (${fallMC + fallAB})` : ""}</button>
       <span class="aviso">Sin apuntes ni celular, como en el examen.</span></div>
-    ${h.length ? `<div class="historial" aria-label="Simulacros anteriores">${h.slice(0,6).map(x => `<span class="pill ${x.puntos >= 60 ? "ok" : "mal"}">${x.fecha} · ${x.puntos} pts · ${x.nota === "Desaprobado" ? "desap." : "nota " + x.nota}</span>`).join("")}</div>` : `<p class="aviso">Todavía no rendiste ningún simulacro de esta materia.</p>`}`;
+    ${h.length ? `<div class="historial" aria-label="Simulacros anteriores">${h.slice(0,6).map(x => `<span class="pill ${x.puntos >= 60 ? "ok" : "mal"}">${x.fecha} · ${x.puntos} pts · ${x.nota === "Desaprobado" ? "desap." : "nota " + x.nota}</span>`).join("")}</div>` : `<p class="aviso">Todavía no rendiste ningún simulacro de esta materia.</p>`}
+    <section class="parte"><h3>Tus puntos débiles</h3>${renderTemas(m)}</section>`;
 }
 
-function empezar(){
-  const m = BANCO[estado.materia];
-  estado.examen = {
-    mc: mezclar(m.mc).slice(0, N_MC).map(p => { const orden = mezclar([0,1,2,3]); return { ...p, orden, resp: null }; }),
-    ab: mezclar(m.ab).slice(0, N_AB).map(p => ({ ...p, texto: "", auto: null }))
+function armar(mc, ab){
+  return {
+    mc: mc.map(p => ({ ...p, orden: mezclar([0,1,2,3]), resp: null })),
+    ab: ab.map(p => ({ ...p, texto: "", auto: null }))
   };
-  estado.fase = "rindiendo"; estado.fin = Date.now() + MINUTOS * 60000; estado.confirmando = false;
-  clearInterval(estado.timer); estado.timer = setInterval(tic, 1000);
+}
+
+function empezar(modo = "completo", tema = ""){
+  const m = BANCO[estado.materia], st = leerSt();
+  estado.modo = modo; estado.tema = tema;
+  if (modo === "errores") estado.examen = armar(mezclar(m.mc.filter(p => fallada(p, st))).slice(0, N_MC), mezclar(m.ab.filter(p => fallada(p, st))).slice(0, N_AB));
+  else if (modo === "tema") estado.examen = armar(sorteo(m.mc.filter(p => p.tema === tema), N_MC, st), sorteo(m.ab.filter(p => p.tema === tema), N_AB, st));
+  else estado.examen = armar(sorteo(m.mc, N_MC, st), sorteo(m.ab, N_AB, st));
+  estado.fase = "rindiendo"; estado.confirmando = false;
+  clearInterval(estado.timer);
+  if (modo === "completo"){ estado.fin = Date.now() + MINUTOS * 60000; estado.timer = setInterval(tic, 1000); }
   renderTodo(); window.scrollTo({ top: 0 });
 }
 
@@ -182,34 +258,38 @@ function tic(){
   if (s === 0) entregar();
 }
 
+function nPreg(){ return estado.examen.mc.length + estado.examen.ab.length; }
+function contestadas(){ const ex = estado.examen; return ex.mc.filter(p => p.resp !== null).length + ex.ab.filter(p => p.texto.trim()).length; }
+
 function renderExamen(){
-  const ex = estado.examen, corr = estado.fase !== "rindiendo";
-  const contestadas = ex.mc.filter(p => p.resp !== null).length + ex.ab.filter(p => p.texto.trim()).length;
+  const ex = estado.examen, corr = estado.fase !== "rindiendo", nmc = ex.mc.length;
   const partA = ex.mc.map((p, i) => {
     const opciones = p.orden.map(j => {
       let cls = "";
       if (corr) { if (j === p.a) cls = "bien"; else if (p.resp === j) cls = "marcada-mal"; }
       return `<label class="${cls}"><input type="radio" name="mc${i}" id="mc${i}-${j}" value="${j}" ${p.resp === j ? "checked" : ""} ${corr ? "disabled" : ""}><span>${esc(p.o[j])}</span></label>`;
     }).join("");
-    const expl = corr ? `<div class="expl ${p.resp === p.a ? "ok" : "mal"}"><b>${p.resp === p.a ? "Bien." : p.resp === null ? "Sin responder." : "Incorrecta."}</b> ${esc(p.e)}</div>` : "";
+    const expl = corr ? `<div class="expl ${p.resp === p.a ? "ok" : "mal"}"><b>${p.resp === p.a ? "Bien." : p.resp === null ? "Sin responder." : "Incorrecta."}</b> ${esc(p.e)}${p.tema ? ` <span class="eyebrow">· ${esc(p.tema)}</span>` : ""}</div>` : "";
     return `<div class="preg"><div class="enun"><span class="num">${i + 1}.</span><p>${esc(p.q)}</p><span class="pts">${PTS_MC} pts</span></div><div class="opc">${opciones}</div>${expl}</div>`;
   }).join("");
   const partB = ex.ab.map((p, i) => {
-    const n = N_MC + i + 1;
-    const modelo = corr ? `<div class="modelo"><span class="eyebrow">Respuesta modelo</span><ul>${p.r.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
+    const n = nmc + i + 1;
+    const modelo = corr ? `<div class="modelo"><span class="eyebrow">Respuesta modelo${p.tema ? " · " + esc(p.tema) : ""}</span><ul>${p.r.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>
       <div class="autoeval" role="group" aria-label="Tu puntaje en la pregunta ${n}"><span class="aviso">Tu respuesta:</span>
         ${[["1","Completa · 8"],["0.5","A medias · 4"],["0","Mal o vacía · 0"]].map(([v, t]) => `<button type="button" data-ab="${i}" data-v="${v}" aria-pressed="${p.auto === Number(v)}">${t}</button>`).join("")}</div>` : "";
     return `<div class="preg"><div class="enun"><span class="num">${n}.</span><p>${esc(p.q)}</p><span class="pts">${PTS_AB} pts</span></div>
       <div class="abierta"><textarea id="ab${i}" data-ab="${i}" ${corr ? "readonly" : ""} placeholder="Escribí tu respuesta como en el examen…">${esc(p.texto)}</textarea>${modelo}</div></div>`;
   }).join("");
+  const titulo = estado.modo === "errores" ? "Repaso de errores" : estado.modo === "tema" ? `Práctica · ${esc(estado.tema)}` : "";
   const barra = estado.fase === "rindiendo"
-    ? `<div class="barra"><span class="reloj" id="reloj">--:--</span><span class="aviso" id="progreso">${contestadas}/${N_MC + N_AB} respondidas</span><button class="btn" type="button" id="entregar">Entregar</button></div>
-       ${estado.confirmando ? `<div class="confirm"><span>${estado.confirmando === "entregar" ? `Te quedan ${N_MC + N_AB - contestadas} sin responder. ¿Entregás igual?` : "Si cambiás de materia se pierde este simulacro."}</span><button class="btn" type="button" id="si">${estado.confirmando === "entregar" ? "Entregar igual" : "Cambiar de materia"}</button><button class="btn sec" type="button" id="no">Seguir rindiendo</button></div>` : ""}`
+    ? `<div class="barra">${estado.modo === "completo" ? `<span class="reloj" id="reloj">--:--</span>` : `<span class="chip">${titulo} · sin tiempo</span>`}<span class="aviso" id="progreso">${contestadas()}/${nPreg()} respondidas</span><button class="btn" type="button" id="entregar">Entregar</button></div>
+       ${estado.confirmando ? `<div class="confirm"><span>${estado.confirmando === "entregar" ? `Te quedan ${nPreg() - contestadas()} sin responder. ¿Entregás igual?` : "Si cambiás de materia se pierde lo que respondiste."}</span><button class="btn" type="button" id="si">${estado.confirmando === "entregar" ? "Entregar igual" : "Cambiar de materia"}</button><button class="btn sec" type="button" id="no">Seguir rindiendo</button></div>` : ""}`
     : "";
+  const otro = estado.modo === "completo" ? `Otro simulacro de ${esc(BANCO[estado.materia].nombre)}` : "Volver al inicio de la materia";
   return `${barra}${estado.fase !== "rindiendo" ? renderResultado() : ""}
-    <section class="parte"><h3>Parte A — Opción múltiple (cada número vale ${PTS_MC} puntos)</h3>${partA}</section>
-    <section class="parte"><h3>Parte B — Conceptual (cada número vale ${PTS_AB} puntos)</h3>${partB}</section>
-    ${estado.fase !== "rindiendo" ? `<div class="acciones"><button class="btn" type="button" id="otro">Otro simulacro de ${esc(BANCO[estado.materia].nombre)}</button></div>` : ""}`;
+    ${nmc ? `<section class="parte"><h3>Parte A — Opción múltiple (cada número vale ${PTS_MC} puntos)</h3>${partA}</section>` : ""}
+    ${ex.ab.length ? `<section class="parte"><h3>Parte B — Conceptual (cada número vale ${PTS_AB} puntos)</h3>${partB}</section>` : ""}
+    ${estado.fase !== "rindiendo" ? `<div class="acciones"><button class="btn" type="button" id="otro">${otro}</button></div>` : ""}`;
 }
 
 function puntaje(){
@@ -217,30 +297,40 @@ function puntaje(){
   const a = ex.mc.filter(p => p.resp === p.a).length * PTS_MC;
   const pend = ex.ab.filter(p => p.auto === null).length;
   const b = ex.ab.reduce((s, p) => s + (p.auto || 0) * PTS_AB, 0);
-  return { a, b, total: a + b, pend };
+  const max = ex.mc.length * PTS_MC + ex.ab.length * PTS_AB;
+  return { a, b, max, total: max ? Math.round(100 * (a + b) / max) : 0, pend };
 }
 
 function renderResultado(){
-  const { a, b, total, pend } = puntaje(), n = nota(total);
+  const ex = estado.examen, { a, b, total, pend } = puntaje(), n = nota(total), comp = estado.modo === "completo";
+  const det = comp ? `Parte A: ${a}/${ex.mc.length * PTS_MC} · Parte B: ${b}/${ex.ab.length * PTS_AB}${pend ? " (parcial)" : ""} · Total: ${total}/100`
+                   : `Aciertos: ${total}%${pend ? " (parcial)" : ""} · ${ex.mc.filter(p => p.resp === p.a).length}/${ex.mc.length} de opción múltiple`;
   return `<div class="resultado">
-    <div class="nota ${pend ? "" : total >= 60 ? "ok" : "mal"}">${pend ? "—" : n === "Desaprobado" ? "D" : n}</div>
-    <div class="det"><strong>${pend ? `Faltan ${pend} abiertas por corregir` : n === "Desaprobado" ? "Desaprobado" : "Aprobado, nota " + n}</strong>
-      <span class="aviso">Parte A: ${a}/${N_MC * PTS_MC} · Parte B: ${b}/${N_AB * PTS_AB}${pend ? " (parcial)" : ""} · Total: ${total}/100</span>
-      <span class="aviso">${pend ? "Bajá a la Parte B y compará cada respuesta con la modelo." : "Repasá las que tienen la explicación en rojo."}</span></div>
-  </div>${tablaEscala(pend ? null : total)}`;
+    <div class="nota ${pend ? "" : total >= 60 ? "ok" : "mal"}">${pend ? "—" : comp ? (n === "Desaprobado" ? "D" : n) : total + "%"}</div>
+    <div class="det"><strong>${pend ? `Faltan ${pend} abiertas por corregir` : comp ? (n === "Desaprobado" ? "Desaprobado" : "Aprobado, nota " + n) : (total >= 60 ? "Bien, seguí así" : "Todavía flojo: repasá el apunte de esta unidad")}</strong>
+      <span class="aviso">${det}</span>
+      <span class="aviso">${pend ? "Bajá a la Parte B y compará cada respuesta con la modelo." : "Lo que fallaste queda marcado para repasar y va a salir más seguido."}</span></div>
+  </div>${comp ? tablaEscala(pend ? null : total) : ""}`;
 }
 
 function entregar(){
   clearInterval(estado.timer); estado.fase = "corrigiendo"; estado.confirmando = false;
-  renderTodo(); window.scrollTo({ top: 0 });
+  quizaGuardar(); renderTodo(); window.scrollTo({ top: 0 });
 }
 
+// Cuando todo está corregido, guarda el resultado de cada pregunta (y la nota si fue un simulacro completo).
 function quizaGuardar(){
   const { total, pend } = puntaje();
   if (pend || estado.fase !== "corrigiendo") return;
   estado.fase = "corregido";
-  const h = leer(), d = new Date();
-  (h[estado.materia] = h[estado.materia] || []).unshift({ fecha: `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`, puntos: total, nota: nota(total) });
+  const st = leerSt(), f = hoy();
+  const anotar = (id, v) => { const s = st[id] = st[id] || { n: 0, ok: 0, ult: 0, f }; s.n++; s.ok += v; s.ult = v; s.f = f; };
+  estado.examen.mc.forEach(p => anotar(p.id, p.resp === p.a ? 1 : 0));
+  estado.examen.ab.forEach(p => anotar(p.id, p.auto));
+  guardarSt(st);
+  if (estado.modo !== "completo") return;
+  const h = leer();
+  (h[estado.materia] = h[estado.materia] || []).unshift({ fecha: f, puntos: total, nota: nota(total) });
   h[estado.materia] = h[estado.materia].slice(0, 20); guardar(h);
 }
 
@@ -248,8 +338,15 @@ function renderHoja(){
   const hoja = document.getElementById("hoja");
   hoja.innerHTML = estado.fase === "inicio" ? renderInicio() : renderExamen();
   const q = id => document.getElementById(id);
-  if (q("empezar")) q("empezar").onclick = empezar;
-  if (q("otro")) q("otro").onclick = empezar;
+  if (q("empezar")) q("empezar").onclick = () => empezar("completo");
+  if (q("errores")) q("errores").onclick = () => empezar("errores");
+  hoja.querySelectorAll("[data-tema]").forEach(b => b.addEventListener("click", () => {
+    const t = temasDe(BANCO[estado.materia])[Number(b.dataset.tema)]; empezar("tema", t.tema);
+  }));
+  if (q("otro")) q("otro").onclick = () => {
+    if (estado.modo === "completo") empezar("completo");
+    else { estado.fase = "inicio"; estado.examen = null; renderTodo(); window.scrollTo({ top: 0 }); }
+  };
   if (q("entregar")) q("entregar").onclick = () => {
     const ex = estado.examen, falta = ex.mc.some(p => p.resp === null) || ex.ab.some(p => !p.texto.trim());
     if (falta) { estado.confirmando = "entregar"; renderHoja(); } else entregar();
@@ -275,13 +372,30 @@ function renderHoja(){
 
 function progreso(){
   const el = document.getElementById("progreso"); if (!el) return;
-  const ex = estado.examen;
-  el.textContent = `${ex.mc.filter(p => p.resp !== null).length + ex.ab.filter(p => p.texto.trim()).length}/${N_MC + N_AB} respondidas`;
+  el.textContent = `${contestadas()}/${nPreg()} respondidas`;
 }
 
 function renderTodo(){ renderMaterias(); renderHoja(); }
 
+// Sin conexión y alertas de instalación
+function red(){
+  const el = document.getElementById("red");
+  el.hidden = navigator.onLine; el.className = "chip off";
+  el.textContent = "Sin conexión · usando el banco guardado";
+}
+addEventListener("online", red); addEventListener("offline", red);
+let pedidoInstalar = null;
+addEventListener("beforeinstallprompt", e => {
+  e.preventDefault(); pedidoInstalar = e;
+  const b = document.getElementById("instalar"); b.hidden = false;
+  b.onclick = async () => { b.hidden = true; pedidoInstalar.prompt(); pedidoInstalar = null; };
+});
+const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+if (/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone) document.getElementById("instalar-ios").hidden = false;
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+
 async function cargar(){
+  red();
   try {
     const r = await fetch("banco.json", { cache: "no-cache" });
     if (!r.ok) throw new Error(r.status);
@@ -293,7 +407,7 @@ async function cargar(){
     document.getElementById("banco-info").textContent = `${total} preguntas en el banco${d ? ` · actualizado el ${d}/${mes}` : ""}`;
     renderTodo();
   } catch (e) {
-    document.getElementById("hoja").innerHTML = '<p class="aviso">No se pudo cargar el banco de preguntas. Revisá la conexión y recargá la página.</p>';
+    document.getElementById("hoja").innerHTML = '<p class="aviso">No se pudo cargar el banco de preguntas. Abrí la página una vez con conexión para que quede guardada en el celular.</p>';
   }
 }
 cargar();
